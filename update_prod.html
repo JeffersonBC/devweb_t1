@@ -19,7 +19,8 @@
 		<div class="flex-container">
 			<div class="menu"> 
 				<div class="menu-content">
-					<a href="./area_adm.html">Home</a>
+					<a href="./index_cliente.html">Home</a>
+                    <a href="./area_adm.html">Área de Administração</a>
 					
 					<div class="divider"></div>
 					
@@ -40,28 +41,21 @@
 			
 			<div class="content">
 				<div class="container">
-					<form action="./area_adm.html">
-						<h2>Cadastro de Adminstrador</h2><br>
+					<form action="./table_prod.html">
+						<h1>Atualizar estoque</h1><br>
 
-						<label>Login:</label>
-						<input type="text" name="Id" value="Jeff">
+                        <label>Operação:</label><br>
+                        <select>
+                            <option value="add">Adicionar</option>
+                            <option value="rmv">Remover</option>
+                        </select>
+                        <br>
+                        <br>
 
-						<label>Senha:</label>
-						<input type="password" name="pass1" value="123456">
+						<label>Quantidade:</label>
+						<input type="text" name="qtd" value="10">
 
-						<label>Confirmar Senha:</label>
-						<input type="password" name="pass2" value="123456">
-
-						<label>Nome:</label>
-						<input type="text" name="name" value="Jefferson">
-
-						<label>Email:</label>
-						<input type="email" name="email" value="jefferson.boldrin@gmail.com">
-
-						<label>Foto:</label>
-						<input type="file" name="foto" value="">
-
-						<button class="right">Cadastrar</button>
+						<button class="right">Atualizar</button>
 
 						<br>
 					</form>
