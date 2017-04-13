@@ -10,47 +10,65 @@
 	</head>
 	<body>
 		<header>
-			<h1>Petshop Dogos</h1>
+			<h1><img src="./svg/pata.svg" class="icon">Petshop Dogos<img src="./svg/pata.svg" class="icon"></h1>
+			<div class="top-menu">
+				<a href="./carrinho.html">Carrinho</a>
+				<a href="./login.html">Login</a>
+			</div>
 		</header>
 
-		<div class="menu"> 
-            <div class="menu-content">
-				<ul>
-					<li>Home</li>
-					<li>Serviços</li>
-					<li>Produtos</li>
-				</ul>
-			</div>
-        </div>
-
-		<div class="content">
-			<div class="container">
-				<form action="./index.html">
-					<h2>Cadastro de Adminstrador</h2><br>
-			
-					<label>Login:</label>
-					<input type="text" name="Id" value="Jeff">
-
-					<label>Senha:</label>
-					<input type="password" name="pass1" value="123456">
-
-					<label>Confirmar Senha:</label>
-					<input type="password" name="pass2" value="123456">
+		<div class="flex-container">
+			<div class="menu"> 
+				<div class="menu-content">
+					<a href="./area_adm.html">Home</a>
 					
-					<label>Nome:</label>
-					<input type="text" name="name" value="Jefferson">
+					<div class="divider"></div>
+					
+					<h2 class="hide-on-small">Cadastro</h2>
+					<a href="">Produtos</a>
+					<a href="">Serviços</a>
 
-					<label>Email:</label>
-					<input type="email" name="email" value="jefferson.boldrin@gmail.com">
+                    <div class="divider"></div>
+                    <h2 class="hide-on-small">Finanças</h2>
+					<a href="">Produtos</a>
+					<a href="">Serviços</a>
 
-					<label>Foto:</label>
-					<input type="file" name="foto" value="">
+                    <div class="divider"></div>
+                    <a href="./reg_admin.html">Cadastrar Administrador</a>
 
-					<button>Cadastrar</button>
+				</div>
+			</div>
+			
+			<div class="content">
+				<div class="container">
+					<form action="./index.html">
+						<h2>Cadastro de Adminstrador</h2><br>
 
-					<br>
-				</form>
+						<label>Login:</label>
+						<input type="text" name="Id" value="Jeff">
+
+						<label>Senha:</label>
+						<input type="password" name="pass1" value="123456">
+
+						<label>Confirmar Senha:</label>
+						<input type="password" name="pass2" value="123456">
+
+						<label>Nome:</label>
+						<input type="text" name="name" value="Jefferson">
+
+						<label>Email:</label>
+						<input type="email" name="email" value="jefferson.boldrin@gmail.com">
+
+						<label>Foto:</label>
+						<input type="file" name="foto" value="">
+
+						<button class="right">Cadastrar</button>
+
+						<br>
+					</form>
+				</div>
 			</div>
 		</div>
+
 	</body>
 </html>
