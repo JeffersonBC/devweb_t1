@@ -8,47 +8,34 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+		
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
 		<link rel="stylesheet" href="./css/forms.css">
+		
+		<script src="./js/jquery-3.2.1.min.js"></script>
+		<script src="./js/materialize.js"></script>
+		<script src="./js/menus.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				StartNavbarUser();
+				StartSidebarUser();
+
+				$(".button-collapse").sideNav();
+			});
+		</script>
 	</head>
 	<body>
-		<header>
-			<h1><img src="./svg/pata.svg" class="icon">Petshop Dogos<img src="./svg/pata.svg" class="icon"></h1>
-			<div class="top-menu">
-				<a href="./carrinho.html">Carrinho</a>
-				<a href="./agenda.html">Agenda</a>
-				<a href="./area_adm.html">Área de Adminstração</a>
+		<div id="navbar"></div>
+		<div id="sidebar"></div>
+
+		<main>
+			<div class="container">
+				<h1>Área de Usuário</h1>
 			</div>
-		</header>
-
-		<div class="flex-container">
-			<div class="menu"> 
-				<div class="menu-content">
-					<a href="./index_cliente.html">Home</a>
-
-					<div class="divider"></div>
-
-					<a href="edit_usuario.html">Editar Conta</a>
-					<a href="">Histórico de Compras</a>
-
-					<div class="divider"></div>
-
-					<a href="./calendario.html">Agendar Serviço</a>
-					<a href="./table_animais.html">Gerenciar Animais</a>
-
-					<div class="divider"></div>
-
-					<a href="">Sair desta Conta</a>
-				</div>
-			</div>
-			
-			<div class="content">
-				<div class="container">
-					<h1>Área de Usuário</h1>
-				</div>
-			</div>
-		</div>
+		</main>
 
 	</body>
 </html>

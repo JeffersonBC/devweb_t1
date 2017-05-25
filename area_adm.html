@@ -8,46 +8,34 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+		
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
 		<link rel="stylesheet" href="./css/forms.css">
+		
+		<script src="./js/jquery-3.2.1.min.js"></script>
+		<script src="./js/materialize.js"></script>
+		<script src="./js/menus.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				StartNavbarAdm();
+				StartSidebarAdm();
+
+				$(".button-collapse").sideNav();
+			});
+		</script>
 	</head>
 	<body>
-		<header>
-			<h1><img src="./svg/pata.svg" class="icon">Petshop Dogos<img src="./svg/pata.svg" class="icon"></h1>
-			<div class="top-menu">
-				<a href="./area_usuario.html">Área de usuário</a>
+		<div id="navbar"></div>
+		<div id="sidebar"></div>
+
+		<main>
+			<div class="container">
+				<h2>Área de Administração</h2>
 			</div>
-		</header>
-
-		<div class="flex-container">
-			<div class="menu"> 
-				<div class="menu-content">
-					<a href="./index_cliente.html">Home</a>
-					
-					<div class="divider"></div>
-					
-					<h2 class="hide-on-small">Cadastro</h2>
-					<a href="./table_prod.html">Produtos</a>
-					<a href="./table_servico.html">Serviços</a>
-
-					<div class="divider"></div>
-					<h2 class="hide-on-small">Finanças</h2>
-					<a href="./vendas_prod.html">Vendas de Produtos</a>
-					<a href="./vendas_servico.html">Vendas de Serviços</a>
-
-					<div class="divider"></div>
-					<a href="./reg_admin.html">Cadastrar Administrador</a>
-
-				</div>
-			</div>
-			
-			<div class="content">
-				<div class="container">
-					<h1>Área de Administração</h1>
-				</div>
-			</div>
-		</div>
+		</main>
 
 	</body>
 </html>

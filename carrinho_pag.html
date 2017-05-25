@@ -8,68 +8,51 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+		
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
 		<link rel="stylesheet" href="./css/forms.css">
+		
+		<script src="./js/jquery-3.2.1.min.js"></script>
+		<script src="./js/materialize.js"></script>
+		<script src="./js/menus.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				StartNavbar();
+				StartSidebar();
+
+				$(".button-collapse").sideNav();
+			});
+		</script>
 	</head>
 	<body>
-		<header>
-			<h1><img src="./svg/pata.svg" class="icon">Petshop Dogos<img src="./svg/pata.svg" class="icon"></h1>
-			<div class="top-menu">
-				<a href="./carrinho.html">Carrinho</a>
-				<a href="./agenda.html">Agenda</a>
-				<a href="./login.html">Login</a>
-			</div>
-		</header>
+		<div id="navbar"></div>
+		<div id="sidebar"></div>
 
-		<div class="flex-container">
-			<div class="menu"> 
-				<div class="menu-content">
-					<a href="./index_cliente.html">Home</a>
-					<a href="#">Endereço e Contato</a>
+		<main>
+			<div class="container">
+				<form action="./index_cliente.html">
+					<h2>Pagamento</h2>
 					
-					<div class="divider"></div>
-
-					<h2 class="hide-on-small">Produtos</h2>
-					<a href="#">Ração</a>
-					<a href="#">Produtos de Higiene</a>
-					<a href="#">Brinquedos</a>
-					<a href="#">Medicamentos</a>
-					
-					<div class="divider"></div>
-					
-					<h2 class="hide-on-small">Serviços</h2>
-					<a href="">Banho e Tosa</a>
-					<a href="">Pet-Hotel</a>
-					<a href="">Veterinário</a>
-					<a href="./calendario.html">Agendar Serviço</a>
-					<a href="./table_animais.html">Gerenciar Animais</a>
-				</div>
-			</div>
-			
-			<div class="content">
-				<div class="container">
-					<form action="./index_cliente.html">
-						<h2>Pagamento</h2>
-						
-						<div class="card">
-							<div class="card-content">
-								<label>Valor Total:</label>
-								<p>R$xx,xx</p>
-							</div>
+					<div class="card">
+						<div class="card-content">
+							<label>Valor Total:</label>
+							<p>R$xx,xx</p>
 						</div>
+					</div>
 
-						<label>Nome:</label>
-						<input type="text" name="name" value="Jefferson B Cardozo">
-						
-						<label>Nº do Cartão de Crédito:</label>
-						<input type="text" name="card" value="xxxx xxxx xxxx xxxx">
+					<label>Nome:</label>
+					<input type="text" name="name" value="Jefferson B Cardozo">
+					
+					<label>Nº do Cartão de Crédito:</label>
+					<input type="text" name="card" value="xxxx xxxx xxxx xxxx">
 
-						<button class="right">Confirmar</button>
-					</form>
-				</div>
+					<button class="right">Confirmar</button>
+				</form>
 			</div>
-		</div>
+		</main>
 
 	</body>
 </html>

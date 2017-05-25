@@ -8,96 +8,83 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+		
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
 		<link rel="stylesheet" href="./css/forms.css">
+		
+		<script src="./js/jquery-3.2.1.min.js"></script>
+		<script src="./js/materialize.js"></script>
+		<script src="./js/menus.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				StartNavbarAdm();
+				StartSidebarAdm();
+
+				$(".button-collapse").sideNav();
+			});
+		</script>
 	</head>
 	<body>
-		<header>
-			<h1><img src="./svg/pata.svg" class="icon">Petshop Dogos<img src="./svg/pata.svg" class="icon"></h1>
-			<div class="top-menu">
-				<a href="./area_usuario.html">Área de usuário</a>
-			</div>
-		</header>
+		<div id="navbar"></div>
+		<div id="sidebar"></div>
 
-		<div class="flex-container">
-			<div class="menu"> 
-				<div class="menu-content">
-					<a href="./index_cliente.html">Home</a>
-					<a href="./area_adm.html">Área de Administração</a>
-					
-					<div class="divider"></div>
-					
-					<h2 class="hide-on-small">Cadastro</h2>
-					<a href="./table_prod.html">Produtos</a>
-					<a href="./table_servico.html">Serviços</a>
-
-					<div class="divider"></div>
-					<h2 class="hide-on-small">Finanças</h2>
-					<a href="./vendas_prod.html">Vendas de Produtos</a>
-					<a href="./vendas_servico.html">Vendas de Serviços</a>
-
-					<div class="divider"></div>
-					<a href="./reg_admin.html">Cadastrar Administrador</a>
-
+		<main>		
+			<div class="container">
+				<h1>Vendas de Serviços</h1>
+				<div class="card-panel">
+					<label>Rendimentos totais do mês:</label>
+					<p>R$xx,xx</p>
 				</div>
-			</div>
-			
-			<div class="content">
-				<div class="container">
-					<h1>Vendas de Serviços</h1>
-					<div class="card">
-						<label>Rendimentos totais do mês:</label>
-						<p>R$xx,xx</p>
-					</div>
-					
-					<label>Filtros:</label>
-					<input type="text" value="Nome do Serviço">
-					<input type="text" value="Nome do Cliente">
-					<input type="date">
+				
+				<label>Filtros:</label>
+				<input type="text" value="Nome do Serviço">
+				<input type="text" value="Nome do Cliente">
+				<input type="date">
 
-					<br>
-					<br>
-					<table style="width:100%">
-						<tr class="table-title">
-							<th>Serviço</th>
-							<th>Cliente</th>
-							<th>Dia</th>
-							<th>Horário</th>
-							<th>Preço</th>
-						</tr>
-						<tr class="table-itens">
-							<td>Banho</th>
-							<td>Jefferson</th>
-							<td>xx</th>
-							<td>xx</th>
-							<td>R$xx,xx</th>
-						</tr>
-						<tr class="table-itens">
-							<td>Hotel</th>
-							<td>Gabriel</th>
-							<td>xx</th>
-							<td>xx</th>
-							<td>R$xx,xx</th>
-						</tr>
-						<tr class="table-itens">
-							<td>Hotel</th>
-							<td>Gabriel</th>
-							<td>xx</th>
-							<td>xx</th>
-							<td>R$xx,xx</th>
-						</tr>
-						<tr class="table-itens">
-							<td>Banho</th>
-							<td>Jefferson</th>
-							<td>xx</th>
-							<td>xx</th>
-							<td>R$xx,xx</th>
-						</tr>
-					</table>
-				</div>
+				<br>
+				<br>
+				<table style="width:100%">
+					<tr class="table-title">
+						<th>Serviço</th>
+						<th>Cliente</th>
+						<th>Dia</th>
+						<th>Horário</th>
+						<th>Preço</th>
+					</tr>
+					<tr class="table-itens">
+						<td>Banho</td>
+						<td>Jefferson</td>
+						<td>xx</td>
+						<td>xx</td>
+						<td>R$xx,xx</td>
+					</tr>
+					<tr class="table-itens">
+						<td>Hotel</td>
+						<td>Gabriel</td>
+						<td>xx</td>
+						<td>xx</td>
+						<td>R$xx,xx</td>
+					</tr>
+					<tr class="table-itens">
+						<td>Hotel</td>
+						<td>Gabriel</td>
+						<td>xx</td>
+						<td>xx</td>
+						<td>R$xx,xx</td>
+					</tr>
+					<tr class="table-itens">
+						<td>Banho</td>
+						<td>Jefferson</td>
+						<td>xx</td>
+						<td>xx</td>
+						<td>R$xx,xx</td>
+					</tr>
+				</table>
 			</div>
-		</div>
+		</main>
 
 	</body>
 </html>
