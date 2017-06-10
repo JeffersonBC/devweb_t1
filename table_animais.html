@@ -17,16 +17,20 @@
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/animalsDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
 				StartNavbarUser();
 				StartSidebarUser();
-
 				$(".button-collapse").sideNav();
+
+				AnimalsTable();
 			});
 		</script>
 	</head>
+
 	<body>
 		<div id="navbar"></div>
 		<div id="sidebar"></div>
@@ -45,19 +49,9 @@
 							<th>Espécie</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr class="table-itens">
-							<td><a href="#"><i class="material-icons">edit</i></a></td>
-							<td class="flat-btn"><a href="vis_animal.html"><span>Bill</span></a></td> 
-							<td>Cachorro</td>
-						</tr>
-						<tr class="table-itens">
-							<td><a href="#"><i class="material-icons">edit</i></a></td>
-							<td class="flat-btn"><a href="vis_animal.html"><span>Max</span></a></td> 
-							<td>Cachorro</td>
-						</tr>
-					</tbody>
+					<tbody id="animals_table"></tbody>
 				</table>
+
 			</div>
 		</main>
 

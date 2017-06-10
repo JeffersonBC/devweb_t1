@@ -1,3 +1,7 @@
+//<object data="html/stuff_to_include.html"> 
+//    Your browser doesn’t support the object tag. 
+//</object>
+
 function StartNavbar (){
     $('#navbar').html(`
         <div class="navbar-fixed">
