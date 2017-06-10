@@ -5,10 +5,13 @@ var open = indexedDB.open("PetshopDogosDatabase", 1);
 open.onupgradeneeded = function() {
     var db       = open.result;
 
-    var animals  = db.createObjectStore("AnimalsStore", {keyPath: "id", autoIncrement:true});
-    var users    = db.createObjectStore("UsersStore",   {keyPath: "id", autoIncrement:true});
-    var products = db.createObjectStore("ProductStore", {keyPath: "id", autoIncrement:true});
-    var service  = db.createObjectStore("ServiceStore", {keyPath: "id", autoIncrement:true});
+    db.createObjectStore("AnimalsStore", {keyPath: "id", autoIncrement:true});
+    db.createObjectStore("UsersStore",   {keyPath: "id", autoIncrement:true});
+    db.createObjectStore("ProductStore", {keyPath: "id", autoIncrement:true});
+    db.createObjectStore("ServiceStore", {keyPath: "id", autoIncrement:true});
+
+    db.createObjectStore("CartStore", {keyPath: "product_id", autoIncrement:true});
+
 };
 
 // Função para processar a query string

@@ -28,7 +28,6 @@ function AnimalsTable (){
 			db.close();
 		};
 	}
-
 }
 
 // Função para adicionar/ atualizar animal
@@ -37,11 +36,6 @@ function AddAnimal (){
 	var animal_species 	= $('#species').val();
 	var animal_race 	= $('#race').val();
 	var animal_birth 	= $('#birth').val();
-
-	console.log(animal_name);
-	console.log(animal_species);
-	console.log(animal_race);
-	console.log(animal_birth);
 
 	// Se algum campo estiver vazio, mostra mensagem de erro
 	if (!animal_name || !animal_species || !animal_race || !animal_birth){
@@ -119,6 +113,7 @@ function GetEditedAnimal(animal_id){
 	}
 }
 
+// Usada para renderizar animal na "visualização de animal"
 function GetAnimal(animal_id){
 	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
 	var open = indexedDB.open("PetshopDogosDatabase", 1);

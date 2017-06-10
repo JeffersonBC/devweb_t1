@@ -8,22 +8,25 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
+
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
 		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/productsDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
 				StartNavbarAdm();
 				StartSidebarAdm();
-
 				$(".button-collapse").sideNav();
+
+				ProductTable();
 			});
 		</script>
 	</head>
@@ -35,43 +38,18 @@
 			<div class="container">
 				<h1>Produtos Cadastrados</h1>
 				<a class="waves-effect waves-light btn" href="./reg_prod.html"><i class="material-icons left">add</i>Adicionar</a>
-				
+
 				<table style="width:100%">
-					<tr class="table-title">
-						<th>Editar</th>
-						<th>Nome</th> 
-						<th>Preço</th>
-						<th>Qtd. em Estoque</th>
-						<th>Atualizar Estoque</th>
-					</tr>
-					<tr class="table-itens">
-						<td><a href="#"><i class="material-icons">edit</i></a></th>
-						<td>Ração</th> 
-						<td>R$xx,xx</th>
-						<td>xx</th>
-						<td><a href="./update_prod.html"><i class="material-icons">update</i></a></th>
-					</tr>
-					<tr class="table-itens">
-						<td><a href="#"><i class="material-icons">edit</i></a></th>
-						<td>Shampoo</th> 
-						<td>R$xx,xx</th>
-						<td>xx</th>
-						<td><a href="./update_prod.html"><i class="material-icons">update</i></a></th>
-					</tr>
-					<tr class="table-itens">
-						<td><a href="#"><i class="material-icons">edit</i></a></th>
-						<td>Remédio</th> 
-						<td>R$xx,xx</th>
-						<td>xx</th>
-						<td><a href="./update_prod.html"><i class="material-icons">update</i></a></th>
-					</tr>
-					<tr class="table-itens">
-						<td><a href="#"><i class="material-icons">edit</i></a></th>
-						<td>Bolinha</th> 
-						<td>R$xx,xx</th>
-						<td>xx</th>
-						<td><a href="./update_prod.html"><i class="material-icons">update</i></a></th>
-					</tr>
+					<thead>
+						<tr>
+							<th>Editar</th>
+							<th>Nome</th>
+							<th>Preço</th>
+							<th>Qtd. em Estoque</th>
+							<th>Atualizar Estoque</th>
+						</tr>
+					</thead>
+					<tbody id="products_table"></tbody>
 				</table>
 			</div>
 		</main>

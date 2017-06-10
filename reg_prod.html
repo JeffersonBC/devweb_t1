@@ -8,22 +8,27 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
-		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/productsDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
 				StartNavbarAdm();
 				StartSidebarAdm();
-
 				$(".button-collapse").sideNav();
+
+				var id = getParameterByName('id');
+				if (id){
+					GetEditedProduct(id);
+				}
 			});
 		</script>
 	</head>
@@ -33,28 +38,27 @@
 
 		<main>
 			<div class="container">
-				<form action="./table_prod.html">
-					<h1>Cadastro de Produto</h1><br>
+				<form>
+					<h2 id="title">Cadastro de Produto</h2><br>
+					<div id="warning"></div>
 
 					<label>Nome:</label>
-					<input type="text" name="name" value="Ração">
+					<input id="name" type="text" name="name">
 
 					<label>Descrição:</label>
-					<input type="text" name="description" value="É de comer.">
+					<input id="description" type="text" name="description">
 
 					<label>Quantidade:</label>
-					<input type="text" name="qtd" value="10">
+					<input id="qtd" type="number" name="qtd">
 
 					<label>Preço:</label>
-					<input type="text" name="price" value="R$10,00">
+					<input id="price" type="number" name="price">
 
 					<label>Foto:</label>
-					<input type="file" name="foto" value="">
-
-					<button class="right">Cadastrar</button>
-
-					<br>
+					<input type="file" name="foto">
 				</form>
+				<br>
+				<button id="send" class="btn waves-effect waves-light right" onclick="AddProduct()">Cadastrar</button>
 			</div>
 		</main>
 

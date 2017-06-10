@@ -8,22 +8,24 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
-		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/productsDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
 				StartNavbar();
 				StartSidebar();
-
 				$(".button-collapse").sideNav();
+
+				ProductCards();
 			});
 		</script>
 	</head>
@@ -33,10 +35,8 @@
 
 		<main>
 			<div class="container">
-				<div class="row">
+				<div id="products_row" class="row">
 					<h2>Seja bem vindo, Jefferson!</h2>
-					<h4>Visualizados Recentemente</h4>
-					<h4>Ração</h4>
 				</div>
 			</div>
 		</main>

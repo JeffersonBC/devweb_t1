@@ -8,22 +8,29 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
+
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
 		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/salesDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
 				StartNavbar();
 				StartSidebar();
-
 				$(".button-collapse").sideNav();
+
+				var id = getParameterByName('id');
+				if (id){
+					AddToCart(id);
+				}
+				CartTable();
 			});
 		</script>
 	</head>
@@ -37,38 +44,19 @@
 
 				<table style="width:100%">
 					<thead>
-						<tr class="table-title">
+						<tr>
 							<th>Produto</th>
-							<th>Preço por Unidade</th> 
+							<th>Preço por Unidade</th>
 							<th>Quantidade</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr class="table-itens">
-							<td>Ração Royal Canin para filhotes (saco pequeno)</td>
-							<td>R$35,90</td> 
-							<td>1</td>
-						</tr>
-						<tr class="table-itens">
-							<td>Shampoo para cães e gatos (300 ml)</td>
-							<td>R$7,99</td> 
-							<td>1</td>
-						</tr>
-						<tr>
-							<td><br></td>
-							<td></td> 
-							<td></td>
-						</tr>
-						<tr class="table-itens">
-							<td><strong>Valor total da compra</strong></td>
-							<td>R$43,89</td> 
-							<td></td>
-						</tr>
+					<tbody id="cart_table">
+
 					</tbody>
 				</table>
-				
+
 				<a href="./carrinho_pag.html"><button class="right">Pagamento</button></a>
-			
+
 			</div>
 		</main>
 
