@@ -8,22 +8,28 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
 		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/animalsDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
 				StartNavbarUser();
 				StartSidebarUser();
-
 				$(".button-collapse").sideNav();
+
+				var id = getParameterByName('id');
+				if (id){
+					GetAnimal(id);
+				}
 			});
 		</script>
 	</head>
@@ -34,33 +40,24 @@
 		<main>
 			<div class="container">
 				<div class="row">
-					<div class="col s12 l6">
-						<div class="card" style="max-width: 400px;">
-							<img src="./jpg/bill.jpeg" style="max-width: 100%;">
+					<div class="col s12 m8 l6 offset-m2">
+						<div class="card">
+							<!--
+							<div class="card-image">
+								<img src="./jpg/bill.jpeg">
+							</div>
+							-->
 							<div class="card-content">
-								<p><div class="card-title">Bill</div></p>
-								<p><span style="color:gray;">Espécie:</span> Cachorro, Poodle</p>
-								<p><span style="color:gray;">Nascimento:</span> 01/01/2007 (10 anos)</p>
+								<p><div id="name" class="card-title"></div></p>
+								<p id="species"><span class="grey-text">Espécie: </span></p>
+								<p id="race">	<span class="grey-text">Raça: </span></p>
+								<p id="birth">	<span class="grey-text">Nascimento: </span></p>
 							</div>
 						</div>
 					</div>
 
-					<div class="col s12 l6">
+					<div class="col s12 m8 l6 offset-m2">
 						<h4>Serviços Agendados</h4>
-						<div class="card" style="max-width: 500px;">
-							<div class="card-content">
-								<p><span style="color:gray;">Serviço:</span> Banho</p>
-								<p><span style="color:gray;">Dia:</span> 20/04/2017</p>
-								<p><span style="color:gray;">Horário:</span> 16h 00</p>
-							</div>
-						</div>
-						<div class="card" style="max-width: 500px;">
-							<div class="card-content">
-								<p><span style="color:gray;">Serviço:</span> Banho</p>
-								<p><span style="color:gray;">Dia:</span> 10/05/2017</p>
-								<p><span style="color:gray;">Horário:</span> 16h 00</p>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>

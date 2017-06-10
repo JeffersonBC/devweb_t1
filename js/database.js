@@ -10,3 +10,14 @@ open.onupgradeneeded = function() {
     var products = db.createObjectStore("ProductStore", {keyPath: "id", autoIncrement:true});
     var service  = db.createObjectStore("ServiceStore", {keyPath: "id", autoIncrement:true});
 };
+
+// Função para processar a query string
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}

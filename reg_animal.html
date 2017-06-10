@@ -12,7 +12,6 @@
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
-		<link rel="stylesheet" href="./css/forms.css">
 
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
@@ -28,7 +27,7 @@
 
 				var id = getParameterByName('id');
 				if (id){
-					GetAnimal(id);
+					GetEditedAnimal(id);
 				}
 			});
 		</script>
@@ -39,27 +38,31 @@
 
 		<main>
 			<div class="container">
-				<form>
-					<h2 id="title">Cadastro de Animal</h2><br>
+				<div class="row">
+					<div class="col s12 m10 offset-m1">
+						<form>
+							<h2 id="title">Cadastro de Animal</h2><br>
+							<div id="warning"></div>
 
-					<label>Nome:</label>
-					<input id="name" type="text" name="name">
+							<label>Nome:</label>
+							<input id="name" type="text" name="name">
 
-					<label>Espécie:</label>
-					<input id="species" type="text" name="species">
+							<label>Espécie:</label>
+							<input id="species" type="text" name="species">
 
-					<label>Raça:</label>
-					<input id="race" type="text" name="race">
+							<label>Raça:</label>
+							<input id="race" type="text" name="race">
 
-					<label>Data de Nascimento:</label>
-					<input id="birth" type="date" name="birth">
+							<label>Data de Nascimento:</label>
+							<input id="birth" type="date" name="birth">
 
-					<label>Foto:</label>
-					<input type="file" name="foto">
-
-
-				</form>
-				<button id="send" class="right" onclick="AddAnimal()">Cadastrar</button>
+							<label>Foto:</label>
+							<input type="file" name="foto">
+						</form>
+						<br>
+						<button id="send" class="btn waves-effect waves-light right" onclick="AddAnimal()">Cadastrar</button>
+					</div>
+				</div>
 			</div>
 		</main>
 
