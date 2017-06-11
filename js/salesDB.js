@@ -17,7 +17,7 @@ function CartTable(){
 			if (cursor) {
                 total += cursor.value.product_price * cursor.value.product_qtd;
 
-				 products_table.append(
+				products_table.append(
 					`<tr>
                         <td>` + cursor.value.product_name + `</td>
                         <td>` + cursor.value.product_price + `</td>
@@ -62,7 +62,6 @@ function AddToCart(product_id){
         var getRequest = products.get(parseInt(product_id));
 		getRequest.onsuccess = function(event) {
             var product;
-            console.log(getRequest);
 
             if (getRequest.result){
                 product = {
@@ -90,6 +89,130 @@ function AddToCart(product_id){
     }
 }
 
-function ShowCart(){
+function ShowCartPayment(){
+    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+    var open = indexedDB.open("PetshopDogosDatabase", 1);
 
+    open.onsuccess = function(event) {
+        var db 		 = open.result;
+        var trans 	 = db.transaction("CartStore", "readwrite");
+		var products = trans.objectStore("CartStore");
+
+        var total = 0;
+
+        products.openCursor().onsuccess = function(event) {
+        	var cursor = event.target.result;
+			if (cursor) {
+                total += cursor.value.product_price * cursor.value.product_qtd;
+				cursor.continue();
+			}
+        };
+
+		trans.oncomplete = function() {
+            $('#price').html(total);
+            db.close();
+		};
+	}
+}
+
+function AddPayment(){
+    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+    var open = indexedDB.open("PetshopDogosDatabase", 1);
+
+    open.onsuccess = function(event) {
+        var db = open.result;
+        var cart_trans = db.transaction(["CartStore", "PaymentStore"], "readwrite");
+
+        var products_ids = [];
+        var products_qtd = [];
+        var i = 0;
+
+        // Adiciona Objeto Pagamento
+        var payments = cart_trans.objectStore("PaymentStore");
+        var payment;
+        payment = {
+            name: $('#name').val(),
+            price: parseFloat($('#price').html()),
+            credit_card : $('#credit_card').val()
+        };
+        payments.put(payment);
+
+        // Remove objetos do carrinho e salva ids e quantidades de produtos em arrays
+        var cart = cart_trans.objectStore("CartStore");
+        cart.openCursor().onsuccess = function(event) {
+        	var cursor = event.target.result;
+			if (cursor) {
+                products_ids.push(cursor.value.product_id);
+                products_qtd[cursor.value.product_id] = cursor.value.product_qtd;
+                i++;
+
+                cursor.delete();
+				cursor.continue();
+			}
+        };
+
+        // Atualiza a quantidade de produtos
+        cart_trans.oncomplete = function(event) {
+            var prod_trans = db.transaction("ProductStore", "readwrite");
+            var products = prod_trans.objectStore("ProductStore");
+
+            products.openCursor().onsuccess = function(event) {
+                var cursor = event.target.result;
+                if (cursor) {
+                    if (products_ids.includes(cursor.value.id)){
+                        var product = {
+                            id: cursor.value.id,
+                            name: cursor.value.name,
+                            description: cursor.value.description,
+                            qtd : cursor.value.qtd - products_qtd[cursor.value.id],
+                            price: cursor.value.price
+                        }
+                        console.log(product);
+                        cursor.update(product);
+                    }
+                    cursor.continue();
+                }
+            }
+
+            prod_trans.oncomplete = function(event) {
+                db.close();
+            };
+
+        };
+    }
+}
+
+function ProductSalesTable(){
+    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+    var open = indexedDB.open("PetshopDogosDatabase", 1);
+
+    open.onsuccess = function(event) {
+        var db 		 = open.result;
+        var trans 	 = db.transaction("CartStore", "readwrite");
+		var payments = trans.objectStore("CartStore");
+
+		var payments_table = $('#pay_table');
+        var total = 0;
+
+        payments.openCursor().onsuccess = function(event) {
+        	var cursor = event.target.result;
+			if (cursor) {
+                total += cursor.value.product_price * cursor.value.product_qtd;
+
+                payments_table.append(
+					`<tr>
+                        <td>` + cursor.value.product_name + `</td>
+                        <td>` + cursor.value.product_price + `</td>
+                    </tr>`
+				);
+
+				cursor.continue();
+			}
+        };
+
+		trans.oncomplete = function() {
+            $('#total_sales').html(total);
+            db.close();
+		};
+	}
 }

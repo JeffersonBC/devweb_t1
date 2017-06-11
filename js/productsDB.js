@@ -137,7 +137,7 @@ function ProductCards (){
 								<p>` + cursor.value.description + `</p>
 							</div>
                             <div class="card-action">
-                                <a href="./carrinho.html?id=` + cursor.value.id + `">Comprar</a>
+                                <a href="./carrinho.html?id=` + cursor.value.id + `">Adicionar ao Carrinho</a>
                             </div
 						</div>
 					</div>`

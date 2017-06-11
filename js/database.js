@@ -10,7 +10,8 @@ open.onupgradeneeded = function() {
     db.createObjectStore("ProductStore", {keyPath: "id", autoIncrement:true});
     db.createObjectStore("ServiceStore", {keyPath: "id", autoIncrement:true});
 
-    db.createObjectStore("CartStore", {keyPath: "product_id", autoIncrement:true});
+    db.createObjectStore("CartStore",    {keyPath: "product_id", autoIncrement:true});
+    db.createObjectStore("PaymentStore", {keyPath: "id", autoIncrement:true});
 
 };
 

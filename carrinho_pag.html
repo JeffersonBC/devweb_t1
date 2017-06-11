@@ -8,22 +8,24 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
-		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/salesDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
 				StartNavbar();
 				StartSidebar();
-
 				$(".button-collapse").sideNav();
+
+				ShowCartPayment();
 			});
 		</script>
 	</head>
@@ -33,24 +35,23 @@
 
 		<main>
 			<div class="container">
-				<form action="./index_cliente.html">
+				<form>
 					<h2>Pagamento</h2>
-					
+
 					<div class="card">
 						<div class="card-content">
 							<label>Valor Total:</label>
-							<p>R$xx,xx</p>
+							<p>R$<span id="price"></span></p>
 						</div>
 					</div>
 
 					<label>Nome:</label>
-					<input type="text" name="name" value="Jefferson B Cardozo">
-					
-					<label>Nº do Cartão de Crédito:</label>
-					<input type="text" name="card" value="xxxx xxxx xxxx xxxx">
+					<input id="name" type="text" name="name">
 
-					<button class="right">Confirmar</button>
+					<label>Nº do Cartão de Crédito:</label>
+					<input id="credit_card" type="text" name="card">
 				</form>
+				<button class="right waves-effect waves-light btn" onclick="AddPayment()">Confirmar</button>
 			</div>
 		</main>
 
