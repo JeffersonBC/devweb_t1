@@ -17,6 +17,8 @@
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/usersDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
@@ -33,27 +35,25 @@
 
 		<main>
 			<div class="container">
-				<form action="./index_cliente.html">
+				<form>
 					<h2>Fazer Login</h2><br>
-			
+					<div id="warning"></div>
 					<label>Login:</label>
-					<input type="text" name="Id" value="Jeff">
+					<input type="text" name="Id" id="Id">
 
 					<label>Senha:</label>
-					<input type="password" name="pass1" value="123456">
-
-					<div class="row">
-						<div class="right">
-							<button>Login</button>
-						</div>
-					</div>
-					<div class="row">
-						<a class="waves-effect waves-teal btn-flat" href="">Esqueceu a senha?</a><br>
-						<a class="waves-effect waves-teal btn-flat" href="./reg_cliente.html">Não tem conta? Cadastre-se</a><br>
-					</div>
+					<input type="password" name="pass1" id="pass1">			
 				</form>
+				<div class="row">
+					<div class="right">
+						<button onclick="login()">Login</button>
+					</div>
+				</div>
+				<div class="row">
+					<a class="waves-effect waves-teal btn-flat" href="">Esqueceu a senha?</a><br>
+					<a class="waves-effect waves-teal btn-flat" href="./reg_cliente.html">Não tem conta? Cadastre-se</a><br>
+				</div>
 			</div>
 		</main>
-
 	</body>
 </html>
