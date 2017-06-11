@@ -21,11 +21,25 @@
 
 		<script>
 			$(document).ready(function() {
-				StartNavbarAdm();
-				StartSidebarAdm();
+				StartNavbarUser();
+				StartSidebarUser();
 				$(".button-collapse").sideNav();
 
-				ServiceSalesTable();
+				var serv_id = getParameterByName('serv_id');
+				var serv_name = getParameterByName('serv_name');
+				var serv_price = getParameterByName('serv_price');
+
+				var anim_id = getParameterByName('anim_id');
+				var anim_name = getParameterByName('anim_name');
+
+				var serv_date = getParameterByName('serv_date');
+				var serv_time = getParameterByName('serv_time');
+
+				if (serv_id && serv_name && serv_price && anim_id && anim_name && serv_date && serv_time){
+					ScheduleService(serv_id, serv_name, serv_price, anim_id, anim_name, serv_date, serv_time);
+				}
+
+				ShowSchedeuleList();
 			});
 		</script>
 	</head>
@@ -35,25 +49,12 @@
 
 		<main>
 			<div class="container">
-				<h1>Vendas de Serviços</h1>
-				<div class="card-panel">
-					<label>Rendimentos totais do mês:</label>
-					<p>R$<span id="total_sales"></span></p>
-				</div>
+				<h1>Agendar Serviço</h1>
+				<div id="message"></div>
+				<a href="./calendario.html" class="btn waves-effect waves-light">Agendar outro serviço</a>
 
-				<table style="width:100%">
-					<thead>
-						<tr>
-							<th>Serviço</th>
-							<th>Animal</th>
-							<th>Dia</th>
-							<th>Horário</th>
-							<th>Preço</th>
-						</tr>
-					</thead>
-					<tbody id="serv_table"></tbody>
-				</table>
-
+				<br><br><br>
+				<div id="cards"></div>
 			</div>
 		</main>
 

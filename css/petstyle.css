@@ -26,3 +26,9 @@ header, main, footer { padding-left: 300px; }
 body {
     background-color: #E8F5E9;
 }
+
+.calendar-time {
+    border-right: 5px green solid;
+    padding: .3rem 0;
+    height: 100%;
+}

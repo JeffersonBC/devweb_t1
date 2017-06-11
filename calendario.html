@@ -8,22 +8,24 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
-		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/serviceDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
 				StartNavbarUser();
 				StartSidebarUser();
-
 				$(".button-collapse").sideNav();
+
+				ShowScheduleService();
 			});
 		</script>
 	</head>
@@ -34,27 +36,21 @@
 		<main>
 			<div class="container">
 				<h1>Agendar Serviço</h1>
-				Selecione uma data:
-				<input type="date" />
-				
-				Horários agendados nessa data
-				<div class="card">
-					<div class="card-content">
-						08:00
-						<img class="serviceSlotImg" src="svg/shower.svg" alt="Service Icon" width="32" height="32" />
-						<div class="card-title">Banho e Tosa</div>
-						Toby
-					</div>
-				</div>
-				
-				<div class="card">
-					<div class="card-content">
-						08:30 
-						<a href="#"><img class="serviceSlotImg" src="svg/plus_sign_font_awesome.svg" alt="+" width="32" height="32" /></a>
-						<a href="#">Agendar</a>
-					</div>
-				</div>
+				<div id="message"></div>
 
+				<label>Data:</label>
+				<input id="service_date" type="date" value="2017-06-01"></input>
+
+				<br>
+				<label>Serviço:</label>
+				<select id="services_select"></select>
+
+				<br>
+				<label>Animal:</label>
+				<select id="animals_select"></select>
+
+				<br>
+				<button class="right waves-effect waves-light btn" onclick="RedirectSchedule()">Próximo</button>
 			</div>
 		</main>
 

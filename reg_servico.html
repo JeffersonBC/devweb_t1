@@ -8,15 +8,16 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
-		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/serviceDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
@@ -34,27 +35,22 @@
 		<main>
 			<div class="container">
 				<form action="./table_prod.html">
-					<h1>Cadastro de Serviço</h1><br>
+					<h2>Cadastro de Serviço</h2><br>
+					<div class="warning"></div>
 
 					<label>Nome:</label>
-					<input type="text" name="name" value="Ração">
+					<input id="name" type="text" name="name">
 
 					<label>Descrição:</label>
-					<input type="text" name="description" value="É de comer.">
-
-					<label>Horários:</label>
-					<input type="text" name="time" value="">
+					<input id="description" type="text" name="description">
 
 					<label>Preço:</label>
-					<input type="text" name="price" value="R$10,00">
+					<input id="price" type="number" name="price">
 
 					<label>Foto:</label>
-					<input type="file" name="foto" value="">
-
-					<button class="right">Cadastrar</button>
-
-					<br>
+					<input type="file" name="foto">
 				</form>
+				<button class="right waves-effect waves-light btn" onclick="AddService()">Cadastrar</button>
 			</div>
 		</main>
 

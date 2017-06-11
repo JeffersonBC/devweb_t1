@@ -8,22 +8,24 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
-		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/serviceDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
 				StartNavbarAdm();
 				StartSidebarAdm();
-
 				$(".button-collapse").sideNav();
+
+				ServiceTable();
 			});
 		</script>
 	</head>
@@ -37,27 +39,15 @@
 				<a class="waves-effect waves-light btn" href="./reg_servico.html"><i class="material-icons left">add</i>Adicionar</a>
 
 				<table style="width:100%">
-					<tr class="table-title">
-						<th>Editar</th>
-						<th>Nome</th> 
-						<th>Preço</th>
-						<th>Horários Cadastrados</th>
-						<th>Horários Reservados</th>
-					</tr>
-					<tr class="table-itens">
-						<td><a href="#"><i class="material-icons">edit</i></a></th>
-						<td>Banho e Tosa</th> 
-						<td>R$xx,xx</th>
-						<td>xx</th>
-						<td>xx</th>
-					</tr>
-					<tr class="table-itens">
-						<td><a href="#"><i class="material-icons">edit</i></a></th>
-						<td>Hotel</th> 
-						<td>R$xx,xx</th>
-						<td>xx</th>
-						<td>xx</th>
-					</tr>
+					<thead>
+						<tr>
+							<th>Editar</th>
+							<th>Nome</th>
+							<th>Preço</th>
+							<th>Horários Reservados</th>
+						</tr>
+					</thead>
+					<tbody id="services_table"></tbody>
 				</table>
 			</div>
 		</div>

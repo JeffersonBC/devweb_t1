@@ -12,7 +12,7 @@ open.onupgradeneeded = function() {
 
     db.createObjectStore("CartStore",    {keyPath: "product_id", autoIncrement:true});
     db.createObjectStore("PaymentStore", {keyPath: "id", autoIncrement:true});
-
+    db.createObjectStore("ScheduleStore", {keyPath: ["date", "time"]});
 };
 
 // Função para processar a query string
