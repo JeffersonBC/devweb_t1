@@ -116,69 +116,78 @@ function ShowCartPayment(){
 }
 
 function AddPayment(){
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    // Se algum campo estiver vazio, mostra mensagem de erro
+	if (!$('#name').val() || !$('#credit_card').val()){
+		var error_box = $('#warning');
+		error_box.html('Um ou mais campos estão vazios, por tanto não foi possível salvar')
+		error_box.addClass('card-panel red white-text');
+	}
+	else{
+        var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+        var open = indexedDB.open("PetshopDogosDatabase", 1);
 
-    open.onsuccess = function(event) {
-        var db = open.result;
-        var cart_trans = db.transaction(["CartStore", "PaymentStore"], "readwrite");
+        open.onsuccess = function(event) {
+            var db = open.result;
+            var cart_trans = db.transaction(["CartStore", "PaymentStore"], "readwrite");
 
-        var products_ids = [];
-        var products_qtd = [];
-        var i = 0;
+            var products_ids = [];
+            var products_qtd = [];
+            var i = 0;
 
-        // Adiciona Objeto Pagamento
-        var payments = cart_trans.objectStore("PaymentStore");
-        var payment;
-        payment = {
-            name: $('#name').val(),
-            price: parseFloat($('#price').html()),
-            credit_card : $('#credit_card').val()
-        };
-        payments.put(payment);
+            // Adiciona Objeto Pagamento
+            var payments = cart_trans.objectStore("PaymentStore");
+            var payment;
+            payment = {
+                name: $('#name').val(),
+                price: parseFloat($('#price').html()),
+                credit_card : $('#credit_card').val()
+            };
+            payments.put(payment);
 
-        // Remove objetos do carrinho e salva ids e quantidades de produtos em arrays
-        var cart = cart_trans.objectStore("CartStore");
-        cart.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-                products_ids.push(cursor.value.product_id);
-                products_qtd[cursor.value.product_id] = cursor.value.product_qtd;
-                i++;
-
-                cursor.delete();
-				cursor.continue();
-			}
-        };
-
-        // Atualiza a quantidade de produtos
-        cart_trans.oncomplete = function(event) {
-            var prod_trans = db.transaction("ProductStore", "readwrite");
-            var products = prod_trans.objectStore("ProductStore");
-
-            products.openCursor().onsuccess = function(event) {
+            // Remove objetos do carrinho e salva ids e quantidades de produtos em arrays
+            var cart = cart_trans.objectStore("CartStore");
+            cart.openCursor().onsuccess = function(event) {
                 var cursor = event.target.result;
                 if (cursor) {
-                    if (products_ids.includes(cursor.value.id)){
-                        var product = {
-                            id: cursor.value.id,
-                            name: cursor.value.name,
-                            description: cursor.value.description,
-                            qtd : cursor.value.qtd - products_qtd[cursor.value.id],
-                            price: cursor.value.price
-                        }
-                        console.log(product);
-                        cursor.update(product);
-                    }
+                    products_ids.push(cursor.value.product_id);
+                    products_qtd[cursor.value.product_id] = cursor.value.product_qtd;
+                    i++;
+
+                    cursor.delete();
                     cursor.continue();
                 }
-            }
-
-            prod_trans.oncomplete = function(event) {
-                db.close();
             };
 
-        };
+            // Atualiza a quantidade de produtos
+            cart_trans.oncomplete = function(event) {
+                var prod_trans = db.transaction("ProductStore", "readwrite");
+                var products = prod_trans.objectStore("ProductStore");
+
+                products.openCursor().onsuccess = function(event) {
+                    var cursor = event.target.result;
+                    if (cursor) {
+                        if (products_ids.includes(cursor.value.id)){
+                            var product = {
+                                id: cursor.value.id,
+                                name: cursor.value.name,
+                                description: cursor.value.description,
+                                qtd : cursor.value.qtd - products_qtd[cursor.value.id],
+                                price: cursor.value.price
+                            }
+                            console.log(product);
+                            cursor.update(product);
+                        }
+                        cursor.continue();
+                    }
+                }
+
+                prod_trans.oncomplete = function(event) {
+                    db.close();
+                    window.location.href = "./index_cliente.html";
+                };
+
+            };
+        }
     }
 }
 
@@ -188,8 +197,8 @@ function ProductSalesTable(){
 
     open.onsuccess = function(event) {
         var db 		 = open.result;
-        var trans 	 = db.transaction("CartStore", "readwrite");
-		var payments = trans.objectStore("CartStore");
+        var trans 	 = db.transaction("PaymentStore", "readwrite");
+		var payments = trans.objectStore("PaymentStore");
 
 		var payments_table = $('#pay_table');
         var total = 0;
@@ -197,12 +206,12 @@ function ProductSalesTable(){
         payments.openCursor().onsuccess = function(event) {
         	var cursor = event.target.result;
 			if (cursor) {
-                total += cursor.value.product_price * cursor.value.product_qtd;
+                total += cursor.value.price;
 
                 payments_table.append(
 					`<tr>
-                        <td>` + cursor.value.product_name + `</td>
-                        <td>` + cursor.value.product_price + `</td>
+                        <td>` + cursor.value.name + `</td>
+                        <td>` + cursor.value.price + `</td>
                     </tr>`
 				);
 
