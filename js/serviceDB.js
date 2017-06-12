@@ -123,14 +123,6 @@ function ShowScheduleService(){
 }
 
 function ScheduleService(serv_id, serv_name, serv_price, anim_id, anim_name, date, time){
-    console.log(serv_id);
-    console.log(serv_name);
-    console.log(serv_price);
-    console.log(anim_id);
-    console.log(anim_name);
-    console.log(date);
-    console.log(time);
-
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
     var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
@@ -347,21 +339,20 @@ function ServiceSalesTable(){
 
 function ShowUserSchedule(){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
+        console.log(".");
+
         var db 		 = open.result;
         var trans 	 = db.transaction("ScheduleStore", "readwrite");
 		var payments = trans.objectStore("ScheduleStore");
 
 		var cards = $('#cards');
-        var total = 0;
 
         payments.openCursor().onsuccess = function(event) {
         	var cursor = event.target.result;
 			if (cursor) {
-                total += cursor.value.service_price;
-
                 cards.append(
 					`<div class="col s12 m6 l6">
 						<div class="card">
@@ -380,7 +371,6 @@ function ShowUserSchedule(){
         };
 
 		trans.oncomplete = function() {
-            $('#total_sales').html(total);
             db.close();
 		};
 	}
