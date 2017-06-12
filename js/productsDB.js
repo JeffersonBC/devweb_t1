@@ -1,7 +1,7 @@
 // Função para iterar sobre os objetos produtos e renderizar a respectiva tabela
 function ProductTable (){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		= open.result;
@@ -47,7 +47,7 @@ function AddProduct (){
 	}
 	else{
 		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-		var open = indexedDB.open("PetshopDogosDatabase", 1);
+		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
 		open.onsuccess = function(event) {
 			var db = open.result;
@@ -88,7 +88,7 @@ function AddProduct (){
 // Se estiver editando uma instância válida de um objeto produto, inicializar página de acordo
 function GetEditedProduct(product_id){
 	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-	var open = indexedDB.open("PetshopDogosDatabase", 1);
+	var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
 	open.onsuccess = function(event) {
 		var db = open.result;
@@ -116,7 +116,7 @@ function GetEditedProduct(product_id){
 // Função renderizar produtos na página inicial
 function ProductCards (){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		= open.result;

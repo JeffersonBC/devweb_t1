@@ -1,7 +1,7 @@
 // Função para iterar sobre o carrinho e renderizar a respectiva tabela
 function CartTable(){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		= open.result;
@@ -49,7 +49,7 @@ function CartTable(){
 
 function AddToCart(product_id){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db = open.result;
@@ -91,7 +91,7 @@ function AddToCart(product_id){
 
 function ShowCartPayment(){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		 = open.result;
@@ -124,7 +124,7 @@ function AddPayment(){
 	}
 	else{
         var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-        var open = indexedDB.open("PetshopDogosDatabase", 1);
+        var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
         open.onsuccess = function(event) {
             var db = open.result;
@@ -193,7 +193,7 @@ function AddPayment(){
 
 function ProductSalesTable(){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		 = open.result;

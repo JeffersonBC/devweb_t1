@@ -1,7 +1,7 @@
 // Função para iterar sobre os objetos animais e renderizar a respectiva tabela
 function AnimalsTable (){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		= open.result;
@@ -45,7 +45,7 @@ function AddAnimal (){
 	}
 	else{
 		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-		var open = indexedDB.open("PetshopDogosDatabase", 1);
+		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
 		open.onsuccess = function(event) {
 			var db = open.result;
@@ -88,7 +88,7 @@ function AddAnimal (){
 // Se estiver editando uma instância válida de um objeto animal, inicializar página de acordo
 function GetEditedAnimal(animal_id){
 	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-	var open = indexedDB.open("PetshopDogosDatabase", 1);
+	var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
 	open.onsuccess = function(event) {
 		var db = open.result;
@@ -116,7 +116,7 @@ function GetEditedAnimal(animal_id){
 // Usada para renderizar animal na "visualização de animal"
 function GetAnimal(animal_id){
 	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-	var open = indexedDB.open("PetshopDogosDatabase", 1);
+	var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
 	open.onsuccess = function(event) {
 		var db = open.result;

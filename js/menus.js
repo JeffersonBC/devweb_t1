@@ -164,7 +164,7 @@ function StartNavbarUser (){
                     <ul class="right hide-on-med-and-down">
                         <li><a href="./carrinho.html">Carrinho</a></li>
 				        <li><a href="./agenda.html">Agenda</a></li>
-				        <li><a href="./area_adm.html">Área de Adminstração</a></li>
+				        <li id="link_adm"><a href="./area_adm.html">Área de Adminstração</a></li>
                     </ul>
                 </div>
             </nav>
@@ -181,7 +181,7 @@ function StartSidebarUser (){
 
             <li class="hide-on-large-only"><a href="./carrinho.html">Carrinho</a></li>
             <li class="hide-on-large-only"><a href="./agenda.html">Agenda</a></li>
-            <li class="hide-on-large-only"><a href="./area_adm.html">Área de Adminstração</a></li>
+            <li class="hide-on-large-only" id="link_adm_side"><a href="./area_adm.html">Área de Adminstração</a></li>
 
             <div class="divider"></div>
 
@@ -195,7 +195,7 @@ function StartSidebarUser (){
 
             <div class="divider"></div>
 
-            <li><a href="">Sair desta Conta</a></li>
+            <li><a onclick="Loggoff()">Sair desta Conta</a></li>
         </ul>
     `);
 }

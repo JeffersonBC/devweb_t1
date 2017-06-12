@@ -8,21 +8,21 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
-		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/usersDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
 				StartNavbarAdm();
 				StartSidebarAdm();
-
 				$(".button-collapse").sideNav();
 			});
 		</script>
@@ -35,29 +35,30 @@
 			<div class="container">
 				<form action="./area_adm.html">
 					<h2>Cadastro de Adminstrador</h2><br>
-
+					<div id="warning"></div>
 					<label>Login:</label>
-					<input type="text" name="Id" value="Jeff">
+					<input type="text" name="Id" id="Id">
 
 					<label>Senha:</label>
-					<input type="password" name="pass1" value="123456">
+					<input type="password" name="pass1" id="pass1">
 
 					<label>Confirmar Senha:</label>
-					<input type="password" name="pass2" value="123456">
+					<input type="password" name="pass2" id="pass2">
 
 					<label>Nome:</label>
-					<input type="text" name="name" value="Jefferson">
+					<input type="text" name="name" id="name">
 
 					<label>Email:</label>
-					<input type="email" name="email" value="jefferson.boldrin@gmail.com">
+					<input type="email" name="email" id="email">
+
+					<label>Endereço:</label>
+					<input type="text" name="address" id="address">
 
 					<label>Foto:</label>
-					<input type="file" name="foto" value="">
+					<input type="file" name="foto" id="foto">
 
-					<button class="right">Cadastrar</button>
-
-					<br>
 				</form>
+				<button class="waves-effect waves-light btn right" onclick="AddAdmin()">Cadastrar</button>
 			</div>
 		</main>
 

@@ -17,6 +17,8 @@
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
+		<script src="./js/database.js"></script>
+		<script src="./js/usersDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
@@ -35,29 +37,29 @@
 			<div class="container">
 				<form action="./area_usuario.html">
 					<h2>Editar Cadastro</h2><br>
-
+					<div id="warning"></div>
 					<label>Nova Senha:</label>
-					<input type="password" name="pass1" value="123456">
+					<input type="password" name="pass1" id="pass1">
 
 					<label>Confirmar Nova Senha:</label>
-					<input type="password" name="pass2" value="123456">
+					<input type="password" name="pass2" id="pass2">
 
 					<div class="divider" style="margin: 1rem 0;"></div>
 
 					<label>Nome:</label>
-					<input type="text" name="name" value="Jefferson">
+					<input type="text" name="name" id="name">
 
 					<label>Email:</label>
-					<input type="email" name="email" value="jefferson.boldrin@gmail.com">
+					<input type="email" name="email" id="email">
 
 					<label>Endereço:</label>
-					<input type="text" name="address" value="Av Francisco Pereira Lopes, 1950, ap 707 bloco 1, São Carlos - SP">
+					<input type="text" name="address" id="address">
 
 					<label>Foto:</label>
-					<input type="file" name="foto" value="">
-
-					<button class="right">Atualizar</button>
+					<input type="file" name="foto" id="foto">
+					
 				</form>
+				<button class="right" onclick="updateUser()">Atualizar</button>
 			</div>
 		</main>
 
