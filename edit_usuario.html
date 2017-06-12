@@ -8,12 +8,11 @@
 		<title>Petshop Dogos</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="stylesheet" href="./css/materialize.css">
 		<link rel="stylesheet" href="./css/petstyle.css">
-		<link rel="stylesheet" href="./css/forms.css">
-		
+
 		<script src="./js/jquery-3.2.1.min.js"></script>
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
@@ -24,8 +23,9 @@
 			$(document).ready(function() {
 				StartNavbarUser();
 				StartSidebarUser();
-
 				$(".button-collapse").sideNav();
+
+				GetEditedUser();
 			});
 		</script>
 	</head>
@@ -38,13 +38,12 @@
 				<form action="./area_usuario.html">
 					<h2>Editar Cadastro</h2><br>
 					<div id="warning"></div>
-					<label>Nova Senha:</label>
+
+					<label>Senha:</label>
 					<input type="password" name="pass1" id="pass1">
 
-					<label>Confirmar Nova Senha:</label>
+					<label>Confirmar Senha:</label>
 					<input type="password" name="pass2" id="pass2">
-
-					<div class="divider" style="margin: 1rem 0;"></div>
 
 					<label>Nome:</label>
 					<input type="text" name="name" id="name">
@@ -57,9 +56,9 @@
 
 					<label>Foto:</label>
 					<input type="file" name="foto" id="foto">
-					
+
 				</form>
-				<button class="right" onclick="updateUser()">Atualizar</button>
+				<button class="right waves-effect waves-light btn" onclick="EditUser()">Atualizar</button>
 			</div>
 		</main>
 

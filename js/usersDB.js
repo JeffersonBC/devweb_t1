@@ -44,7 +44,6 @@ function AddUser(){
 
 			users.put(user);
 
-
 			trans.oncomplete = function() {
 				db.close();
 				window.location.href = "./login.html?reg=true";
@@ -105,6 +104,90 @@ function AddAdmin(){
 				window.location.href = "./area_adm.html?reg=true";
 			};
 		}
+	}
+}
+
+function EditUser(){
+	var user_pass1 	 = $('#pass1').val();
+	var user_pass2 	 = $('#pass2').val();
+	var user_name 	 = $('#name').val();
+	var user_email 	 = $('#email').val();
+	var user_address = $('#address').val();
+
+	// Se as senhas forem diferentes
+	if (user_pass1 != user_pass2){
+
+		var error_box = $('#warning');
+		error_box.html('As senhas nao coincidem')
+		error_box.addClass('card-panel red white-text');
+
+	}
+	// Se algum campo estiver vazio, mostra mensagem de erro
+	else if (!user_pass1 || !user_name || !user_email || !user_address){
+		var error_box = $('#warning');
+		error_box.html('Um ou mais campos est�o vazios, por tanto n�o foi poss�vel salvar')
+		error_box.addClass('card-panel red white-text');
+	}
+	else{
+		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+
+		open.onsuccess = function(event) {
+
+			var db = open.result;
+			var trans = db.transaction(["UsersStore", "UserLoggedIn"], "readwrite");
+			var users = trans.objectStore("UsersStore");
+			var currentUser = trans.objectStore("UserLoggedIn");
+
+			currentUser.openCursor().onsuccess = function(event) {
+				var cursor = event.target.result;
+				if (cursor) {
+					user = {
+						id: 	  cursor.value.id,
+						name: 	  user_name,
+						email: 	  user_email,
+						pass: 	  user_pass1,
+						address:  user_address,
+						is_admin: cursor.value.is_admin
+					};
+
+					cursor.update(user);
+					users.put(user);
+
+					trans.oncomplete = function() {
+						db.close();
+						window.location.href = "./area_usuario.html?reg=true";
+					};
+				}
+			};
+
+		}
+	}
+}
+
+function GetEditedUser(){
+	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+	var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+
+	open.onsuccess = function(event) {
+		var db = open.result;
+		var trans = db.transaction(['UserLoggedIn'], 'readonly');
+		var user = trans.objectStore('UserLoggedIn');
+
+		user.openCursor().onsuccess = function(event) {
+        	var cursor = event.target.result;
+			if (cursor) {
+				$("#pass1")		.val(cursor.value.pass);
+				$("#pass2")		.val(cursor.value.pass);
+				$("#name")		.val(cursor.value.name);
+				$("#email")		.val(cursor.value.email);
+				$("#address")	.val(cursor.value.address);
+			}
+        };
+
+		trans.oncomplete = function() {
+			db.close();
+		};
 	}
 }
 
