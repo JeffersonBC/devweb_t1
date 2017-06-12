@@ -344,3 +344,44 @@ function ServiceSalesTable(){
 		};
 	}
 }
+
+function ShowUserSchedule(){
+    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+    var open = indexedDB.open("PetshopDogosDatabase", 1);
+
+    open.onsuccess = function(event) {
+        var db 		 = open.result;
+        var trans 	 = db.transaction("ScheduleStore", "readwrite");
+		var payments = trans.objectStore("ScheduleStore");
+
+		var cards = $('#cards');
+        var total = 0;
+
+        payments.openCursor().onsuccess = function(event) {
+        	var cursor = event.target.result;
+			if (cursor) {
+                total += cursor.value.service_price;
+
+                cards.append(
+					`<div class="col s12 m6 l6">
+						<div class="card">
+							<div class="card-content">
+								<div class="card-title">` + cursor.value.animal_name + `</div>
+								<span style="color:gray;">Serviço:</span> ` + cursor.value.service_name + `<br>
+								<span style="color:gray;">Dia:</span> ` + cursor.value.date + `<br>
+								<span style="color:gray;">Horário:</span> ` + cursor.value.time + `h 00
+							</div>
+						</div>
+					</div>`
+				);
+
+				cursor.continue();
+			}
+        };
+
+		trans.oncomplete = function() {
+            $('#total_sales').html(total);
+            db.close();
+		};
+	}
+}
