@@ -1,6 +1,5 @@
-// Função para adicionar/ atualizar user
+// FunÃ§Ã£o para adicionar/ atualizar user
 function AddUser(){
-	
 	var user_id 	 = $('#Id').val();
 	var user_pass1 	 = $('#pass1').val();
 	var user_pass2 	 = $('#pass2').val();
@@ -8,59 +7,111 @@ function AddUser(){
 	var user_email 	 = $('#email').val();
 	var user_address = $('#address').val();
 	var user_foto 	 = $('#foto').val();
-	
-	
+
 	// Se as senhas forem diferentes
 	if (user_pass1 != user_pass2){
-			
+
 		var error_box = $('#warning');
 		error_box.html('As senhas nao coincidem')
 		error_box.addClass('card-panel red white-text');
-	
+
 	}
 	// Se algum campo estiver vazio, mostra mensagem de erro
 	else if (!user_id || !user_pass1 || !user_name || !user_email || !user_address){
 		var error_box = $('#warning');
-		error_box.html('Um ou mais campos estão vazios, por tanto não foi possível salvar')
+		error_box.html('Um ou mais campos estï¿½o vazios, por tanto nï¿½o foi possï¿½vel salvar')
 		error_box.addClass('card-panel red white-text');
 	}
 	else{
-		
+
 		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
 		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
 		open.onsuccess = function(event) {
-			
+
 			var db = open.result;
 			var trans = db.transaction("UsersStore", "readwrite");
 			var users = trans.objectStore("UsersStore");
 
 			user = {
-				id: user_id,
-				name: user_name,
-				email: user_email,
-				pass: user_pass1,
-				address: user_address
+				id: 	  user_id,
+				name: 	  user_name,
+				email: 	  user_email,
+				pass: 	  user_pass1,
+				address:  user_address,
+				is_admin: false
 			};
-			
+
 			users.put(user);
-		
+
 
 			trans.oncomplete = function() {
 				db.close();
-				window.location.href = "./index_cliente.html";
+				window.location.href = "./login.html?reg=true";
 			};
 		}
 	}
 }
 
-
-
-function login() {
+// FunÃ§Ã£o para adicionar/ atualizar user
+function AddAdmin(){
 	var user_id 	 = $('#Id').val();
 	var user_pass1 	 = $('#pass1').val();
-	console.log("user_id: " + user_id);
-	
+	var user_pass2 	 = $('#pass2').val();
+	var user_name 	 = $('#name').val();
+	var user_email 	 = $('#email').val();
+	var user_address = $('#address').val();
+	var user_foto 	 = $('#foto').val();
+
+	// Se as senhas forem diferentes
+	if (user_pass1 != user_pass2){
+
+		var error_box = $('#warning');
+		error_box.html('As senhas nao coincidem')
+		error_box.addClass('card-panel red white-text');
+
+	}
+	// Se algum campo estiver vazio, mostra mensagem de erro
+	else if (!user_id || !user_pass1 || !user_name || !user_email || !user_address){
+		var error_box = $('#warning');
+		error_box.html('Um ou mais campos estï¿½o vazios, por tanto nï¿½o foi possï¿½vel salvar')
+		error_box.addClass('card-panel red white-text');
+	}
+	else{
+
+		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+
+		open.onsuccess = function(event) {
+
+			var db = open.result;
+			var trans = db.transaction("UsersStore", "readwrite");
+			var users = trans.objectStore("UsersStore");
+
+			user = {
+				id: 	  user_id,
+				name: 	  user_name,
+				email: 	  user_email,
+				pass: 	  user_pass1,
+				address:  user_address,
+				is_admin: true
+			};
+
+			users.put(user);
+
+
+			trans.oncomplete = function() {
+				db.close();
+				window.location.href = "./area_adm.html?reg=true";
+			};
+		}
+	}
+}
+
+function Login() {
+	var user_id    = $('#Id').val();
+	var user_pass1 = $('#pass1').val();
+
 	if (!user_id) {
 		var error_box = $('#warning');
 		error_box.html('Informe o nome de usuario');
@@ -77,37 +128,137 @@ function login() {
 
 		open.onsuccess = function(event) {
 			var db = open.result;
-			var trans = db.transaction(['UsersStore'], 'readonly');
+			var trans = db.transaction(['UsersStore', 'UserLoggedIn'], 'readwrite');
+
 			var users = trans.objectStore('UsersStore');
-			
-			var trans2 = db.transaction(['UserLoggedIn'], "readwrite");
-			var userLoggedIn = trans2.objectStore('UserLoggedIn');
-			
-			users.openCursor().onsuccess = function(event) {
-				let cursor = event.target.result;
-				if(cursor){
-					if (cursor.value.id == user_id) {	
-							// TODO: VERIFICAR SE O USUARIO TÁ NA TABELA UsersLoggedIn 
-							// E SE TIVER, SUBSTITUIR POR ESSE USUARIO
-							// SENAO, ADICIONAR						
-							
-							// Redireciona pra pagina de cliente
-							location = "./index_cliente.html";
-						}
+			var userLoggedIn = trans.objectStore('UserLoggedIn');
+
+			var getUser = users.get(user_id);
+			getUser.onsuccess = function() {
+				if(getUser.result){
+					// UsuÃ¡rio existe mas senha estÃ¡ errada
+					if (getUser.result.pass != user_pass1){
+						var error_box = $('#warning');
+						error_box.html('Senha incorreta');
+						error_box.addClass('card-panel red white-text');
+
+						trans.oncomplete = function() {
+							db.close();
+						};
 					}
-					else {
-						cursor.continue();
-					}									
+
+					// Credenciais corretas
+					else{
+						userLoggedIn.openCursor().onsuccess = function(event) {
+							var cursor = event.target.result;
+							if (cursor) {
+								cursor.delete();
+								cursor.continue();
+							}
+							else {
+								user = {
+									id: 	  getUser.result.id,
+									name: 	  getUser.result.name,
+									email: 	  getUser.result.email,
+									pass: 	  getUser.result.pass,
+									address:  getUser.result.address,
+									is_admin: getUser.result.is_admin
+								};
+
+								userLoggedIn.put(user);
+
+								trans.oncomplete = function() {
+									db.close();
+									window.location.href = "./index_cliente.html";
+								};
+							}
+						};
+					}
 				}
-				else { // Se todos os registros foram percorridos	
+				// UsuÃ¡rio nÃ£o existe
+				else {
 					var error_box = $('#warning');
-					error_box.html('Nome de usuario ou senha invalidos');
-					error_box.addClass('card-panel red white-text');				
-				}		
-			}
-			trans2.oncomplete = function() {
-				db.close();
+					error_box.html('Nome de usuÃ¡rio nÃ£o existe');
+					error_box.addClass('card-panel red white-text');
+
+					trans.oncomplete = function() {
+						db.close();
+					};
+				}
 			};
 		}
+	}
+}
+
+function Loggoff() {
+	var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+
+	open.onsuccess = function(event) {
+		var db = open.result;
+		var trans = db.transaction(['UserLoggedIn'], 'readwrite');
+		var userLoggedIn = trans.objectStore('UserLoggedIn');
+
+		userLoggedIn.openCursor().onsuccess = function(event) {
+			var cursor = event.target.result;
+			if (cursor) {
+				cursor.delete();
+				cursor.continue();
+			}
+			else{
+				trans.oncomplete = function() {
+					db.close();
+					window.location.href = "./index.html";
+				};
+			}
+		}
+	}
+
+}
+
+function LoggedUserName(){
+	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+
+    open.onsuccess = function(event) {
+        var db 	  = open.result;
+        var trans = db.transaction("UserLoggedIn", "readwrite");
+		var user  = trans.objectStore("UserLoggedIn");
+
+        user.openCursor().onsuccess = function(event) {
+        	var cursor = event.target.result;
+			if (cursor) {
+				$('#username').append(cursor.value.name);
+			}
+        };
+
+		trans.oncomplete = function() {
+			db.close();
+		};
+	}
+}
+
+function CheckAdm(){
+	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+
+    open.onsuccess = function(event) {
+        var db 	  = open.result;
+        var trans = db.transaction("UserLoggedIn", "readwrite");
+		var user  = trans.objectStore("UserLoggedIn");
+
+        user.openCursor().onsuccess = function(event) {
+        	var cursor = event.target.result;
+			if (cursor) {
+				if (cursor.value.is_admin != true){
+					$('#link_adm').remove();
+					$('#link_adm_side').remove();
+				}
+			}
+			else {
+				trans.oncomplete = function() {
+					db.close();
+				};
+			}
+        };
 	}
 }
