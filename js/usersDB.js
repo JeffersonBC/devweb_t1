@@ -27,7 +27,7 @@ function AddUser(){
 	else{
 		
 		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-		var open = indexedDB.open("PetshopDogosDatabase", 1);
+		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
 		open.onsuccess = function(event) {
 			
@@ -44,6 +44,7 @@ function AddUser(){
 			};
 			
 			users.put(user);
+		
 
 			trans.oncomplete = function() {
 				db.close();
@@ -52,6 +53,8 @@ function AddUser(){
 		}
 	}
 }
+
+
 
 function login() {
 	var user_id 	 = $('#Id').val();
@@ -70,18 +73,27 @@ function login() {
 	}
 	else
 	{
-		var open = indexedDB.open("PetshopDogosDatabase", 1);
+		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
 		open.onsuccess = function(event) {
 			var db = open.result;
 			var trans = db.transaction(['UsersStore'], 'readonly');
 			var users = trans.objectStore('UsersStore');
 			
+			var trans2 = db.transaction(['UserLoggedIn'], "readwrite");
+			var userLoggedIn = trans2.objectStore('UserLoggedIn');
+			
 			users.openCursor().onsuccess = function(event) {
 				let cursor = event.target.result;
 				if(cursor){
-					if (cursor.value.id == user_id) {
-						location = "./index_cliente.html";
+					if (cursor.value.id == user_id) {	
+							// TODO: VERIFICAR SE O USUARIO TÁ NA TABELA UsersLoggedIn 
+							// E SE TIVER, SUBSTITUIR POR ESSE USUARIO
+							// SENAO, ADICIONAR						
+							
+							// Redireciona pra pagina de cliente
+							location = "./index_cliente.html";
+						}
 					}
 					else {
 						cursor.continue();
@@ -93,7 +105,7 @@ function login() {
 					error_box.addClass('card-panel red white-text');				
 				}		
 			}
-			trans.oncomplete = function() {
+			trans2.oncomplete = function() {
 				db.close();
 			};
 		}

@@ -1,7 +1,7 @@
 // Função para iterar sobre os objetos serviços e renderizar a respectiva tabela
 function ServiceTable(){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		 = open.result;
@@ -45,7 +45,7 @@ function AddService(){
 	}
 	else{
 		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-		var open = indexedDB.open("PetshopDogosDatabase", 1);
+		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
 		open.onsuccess = function(event) {
 			var db = open.result;
@@ -83,7 +83,7 @@ function AddService(){
 
 function ShowScheduleService(){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		= open.result;
@@ -132,7 +132,7 @@ function ScheduleService(serv_id, serv_name, serv_price, anim_id, anim_name, dat
     console.log(time);
 
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db = open.result;
@@ -171,7 +171,7 @@ function RedirectSchedule(){
 
     // Procura no DB o preço do serviço selecionado
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		 = open.result;
@@ -234,7 +234,7 @@ function ShowSchedeuleList(){
     }
 
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		 = open.result;
@@ -274,7 +274,7 @@ function ShowSchedeuleList(){
 
 function ShowAnimalSchedule(animal_id){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		 = open.result;
@@ -309,7 +309,7 @@ function ShowAnimalSchedule(animal_id){
 
 function ServiceSalesTable(){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", 1);
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
     open.onsuccess = function(event) {
         var db 		 = open.result;
