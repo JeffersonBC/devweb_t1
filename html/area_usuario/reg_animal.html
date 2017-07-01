@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="author" content="Jefferson Boldrin Cardozo - 7591671">
+		<meta name="author" content="Gabriel Pineiro de Carvalho - 7960727">
+		<meta name="author" content="Raul Procopio- 9277200">
+
+		<title>Petshop Dogos</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="stylesheet" href="/css/materialize.css">
+		<link rel="stylesheet" href="/css/petstyle.css">
+
+		<script src="/js/jquery-3.2.1.min.js"></script>
+		<script src="/js/materialize.js"></script>
+		<script src="/js/menus.js"></script>
+		<script src="/js/database.js"></script>
+		<script src="/js/animalsDB.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				StartNavbarUser();
+				StartSidebarUser();
+				$(".button-collapse").sideNav();
+
+				var id = getParameterByName('id');
+				if (id){
+					GetEditedAnimal(id);
+				}
+			});
+		</script>
+	</head>
+	<body>
+		<div id="navbar"></div>
+		<div id="sidebar"></div>
+
+		<main>
+			<div class="container">
+				<div class="row">
+					<div class="col s12 m10 offset-m1">
+						<form>
+							<h2 id="title">Cadastro de Animal</h2><br>
+							<div id="warning"></div>
+
+							<label>Nome:</label>
+							<input id="name" type="text" name="name">
+
+							<label>Espécie:</label>
+							<input id="species" type="text" name="species">
+
+							<label>Raça:</label>
+							<input id="race" type="text" name="race">
+
+							<label>Data de Nascimento:</label>
+							<input id="birth" type="date" name="birth">
+
+							<label>Foto:</label>
+							<input type="file" name="foto">
+						</form>
+						<br>
+						<button id="send" class="btn waves-effect waves-light right" onclick="AddAnimal()">Cadastrar</button>
+					</div>
+				</div>
+			</div>
+		</main>
+
+	</body>
+</html>

@@ -15,7 +15,7 @@ function ProductTable (){
 			if (cursor) {
 				 products_table.append(
 					`<tr class="table-itens">
-						<td><a href="./reg_prod.html?id=` + cursor.value.id + `"><i class="material-icons">edit</i></a></th>
+						<td><a href="/area_adm/produtos/registrar?id=` + cursor.value.id + `"><i class="material-icons">edit</i></a></th>
 						<td>` + cursor.value.name + `</th>
 						<td>` + cursor.value.price + `</th>
 						<td>` + cursor.value.qtd + `</th>
@@ -79,7 +79,7 @@ function AddProduct (){
 
 			trans.oncomplete = function() {
 				db.close();
-				window.location.href = "./table_prod.html";
+				window.location.href = "/area_adm/produtos/";
 			};
 		}
 	}
@@ -137,7 +137,7 @@ function ProductCards (){
 								<p>` + cursor.value.description + `</p>
 							</div>
                             <div class="card-action">
-                                <a href="./carrinho.html?id=` + cursor.value.id + `">Adicionar ao Carrinho</a>
+                                <a href="/carrinho?id=` + cursor.value.id + `">Adicionar ao Carrinho</a>
                             </div
 						</div>
 					</div>`

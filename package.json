@@ -1,0 +1,26 @@
+{
+  "name": "t3web",
+  "version": "1.0.0",
+  "description": "T3 de Web",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://JeffersonBC@github.com/JeffersonBC/devweb_t1.git"
+  },
+  "keywords": [
+    "t3"
+  ],
+  "author": "Jefferson, Gabriel, Raul",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JeffersonBC/devweb_t1/issues"
+  },
+  "homepage": "https://github.com/JeffersonBC/devweb_t1#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}

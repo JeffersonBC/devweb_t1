@@ -17,17 +17,19 @@
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
 		<script src="./js/database.js"></script>
-		<script src="./js/animalsDB.js"></script>
+		<script src="./js/usersDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
-				StartNavbarUser();
-				StartSidebarUser();
+				StartNavbarOff();
+				StartSidebarOff();
 				$(".button-collapse").sideNav();
 
-				var id = getParameterByName('id');
-				if (id){
-					GetEditedAnimal(id);
+				var reg = getParameterByName('reg');
+				if (reg){
+					var error_box = $('#warning');
+					error_box.html('Usuário criado com sucesso!')
+					error_box.addClass('card-panel green white-text');
 				}
 			});
 		</script>
@@ -38,33 +40,25 @@
 
 		<main>
 			<div class="container">
+				<form>
+					<h2>Fazer Login</h2><br>
+					<div id="warning"></div>
+					<label>Login:</label>
+					<input type="text" name="Id" id="Id">
+
+					<label>Senha:</label>
+					<input type="password" name="pass1" id="pass1">
+				</form>
 				<div class="row">
-					<div class="col s12 m10 offset-m1">
-						<form>
-							<h2 id="title">Cadastro de Animal</h2><br>
-							<div id="warning"></div>
-
-							<label>Nome:</label>
-							<input id="name" type="text" name="name">
-
-							<label>Espécie:</label>
-							<input id="species" type="text" name="species">
-
-							<label>Raça:</label>
-							<input id="race" type="text" name="race">
-
-							<label>Data de Nascimento:</label>
-							<input id="birth" type="date" name="birth">
-
-							<label>Foto:</label>
-							<input type="file" name="foto">
-						</form>
-						<br>
-						<button id="send" class="btn waves-effect waves-light right" onclick="AddAnimal()">Cadastrar</button>
+					<div class="right">
+						<button class="waves-effect waves-light btn" onclick="Login()">Login</button>
 					</div>
+				</div>
+				<div class="row">
+					<a class="waves-effect waves-teal btn-flat" href="">Esqueceu a senha?</a><br>
+					<a class="waves-effect waves-teal btn-flat" href="/cadastro">Não tem conta? Cadastre-se</a><br>
 				</div>
 			</div>
 		</main>
-
 	</body>
 </html>

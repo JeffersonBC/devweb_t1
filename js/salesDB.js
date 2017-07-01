@@ -183,7 +183,7 @@ function AddPayment(){
 
                 prod_trans.oncomplete = function(event) {
                     db.close();
-                    window.location.href = "./index_cliente.html";
+                    window.location.href = "/";
                 };
 
             };

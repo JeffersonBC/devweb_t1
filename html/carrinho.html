@@ -17,15 +17,19 @@
 		<script src="./js/materialize.js"></script>
 		<script src="./js/menus.js"></script>
 		<script src="./js/database.js"></script>
-		<script src="./js/usersDB.js"></script>
+		<script src="./js/salesDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
-				StartNavbarUser();
-				StartSidebarUser();
+				StartNavbar();
+				StartSidebar();
 				$(".button-collapse").sideNav();
 
-				GetEditedUser();
+				var id = getParameterByName('id');
+				if (id){
+					AddToCart(id);
+				}
+				CartTable();
 			});
 		</script>
 	</head>
@@ -35,30 +39,23 @@
 
 		<main>
 			<div class="container">
-				<form action="./area_usuario.html">
-					<h2>Editar Cadastro</h2><br>
-					<div id="warning"></div>
+				<h1>Carrinho</h1>
 
-					<label>Senha:</label>
-					<input type="password" name="pass1" id="pass1">
+				<table style="width:100%">
+					<thead>
+						<tr>
+							<th>Produto</th>
+							<th>Preço por Unidade</th>
+							<th>Quantidade</th>
+						</tr>
+					</thead>
+					<tbody id="cart_table">
 
-					<label>Confirmar Senha:</label>
-					<input type="password" name="pass2" id="pass2">
+					</tbody>
+				</table>
 
-					<label>Nome:</label>
-					<input type="text" name="name" id="name">
+				<a class="right waves-effect waves-light btn" href="/carrinho_pagamento">Pagamento</a>
 
-					<label>Email:</label>
-					<input type="email" name="email" id="email">
-
-					<label>Endereço:</label>
-					<input type="text" name="address" id="address">
-
-					<label>Foto:</label>
-					<input type="file" name="foto" id="foto">
-
-				</form>
-				<button class="right waves-effect waves-light btn" onclick="EditUser()">Atualizar</button>
 			</div>
 		</main>
 

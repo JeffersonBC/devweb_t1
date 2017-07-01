@@ -15,7 +15,7 @@ function ServiceTable(){
 			if (cursor) {
 				 services_table.append(
 					`<tr>
-						<td><a href="./reg_servico.html?id=` + cursor.value.id + `"><i class="material-icons">edit</i></a></th>
+						<td><a href="/area_adm/servicos/registrar?id=` + cursor.value.id + `"><i class="material-icons">edit</i></a></th>
 						<td>` + cursor.value.name + `</th>
 						<td>R$` + cursor.value.price + `</th>
 						<td>xx</th>
@@ -75,7 +75,7 @@ function AddService(){
 
 			trans.oncomplete = function() {
 				db.close();
-				window.location.href = "./table_servico.html";
+				window.location.href = "/area_adm/servicos/";
 			};
 		}
 	}

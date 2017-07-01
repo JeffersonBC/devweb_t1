@@ -46,7 +46,7 @@ function AddUser(){
 
 			trans.oncomplete = function() {
 				db.close();
-				window.location.href = "./login.html?reg=true";
+				window.location.href = "/login?reg=true";
 			};
 		}
 	}
@@ -101,7 +101,7 @@ function AddAdmin(){
 
 			trans.oncomplete = function() {
 				db.close();
-				window.location.href = "./area_adm.html?reg=true";
+				window.location.href = "/area_adm?reg=true";
 			};
 		}
 	}
@@ -156,7 +156,7 @@ function EditUser(){
 
 					trans.oncomplete = function() {
 						db.close();
-						window.location.href = "./area_usuario.html?reg=true";
+						window.location.href = "/area_usuario?reg=true";
 					};
 				}
 			};
@@ -252,7 +252,7 @@ function Login() {
 
 								trans.oncomplete = function() {
 									db.close();
-									window.location.href = "./index_cliente.html";
+									window.location.href = "/";
 								};
 							}
 						};
@@ -290,7 +290,7 @@ function Loggoff() {
 			else{
 				trans.oncomplete = function() {
 					db.close();
-					window.location.href = "./index.html";
+					window.location.href = "/";
 				};
 			}
 		}

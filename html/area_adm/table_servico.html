@@ -10,26 +10,22 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link rel="stylesheet" href="./css/materialize.css">
-		<link rel="stylesheet" href="./css/petstyle.css">
+		<link rel="stylesheet" href="/css/materialize.css">
+		<link rel="stylesheet" href="/css/petstyle.css">
 
-		<script src="./js/jquery-3.2.1.min.js"></script>
-		<script src="./js/materialize.js"></script>
-		<script src="./js/menus.js"></script>
-		<script src="./js/database.js"></script>
-		<script src="./js/salesDB.js"></script>
+		<script src="/js/jquery-3.2.1.min.js"></script>
+		<script src="/js/materialize.js"></script>
+		<script src="/js/menus.js"></script>
+		<script src="/js/database.js"></script>
+		<script src="/js/serviceDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
-				StartNavbar();
-				StartSidebar();
+				StartNavbarAdm();
+				StartSidebarAdm();
 				$(".button-collapse").sideNav();
 
-				var id = getParameterByName('id');
-				if (id){
-					AddToCart(id);
-				}
-				CartTable();
+				ServiceTable();
 			});
 		</script>
 	</head>
@@ -39,25 +35,22 @@
 
 		<main>
 			<div class="container">
-				<h1>Carrinho</h1>
+				<h1>Serviços Cadastrados</h1>
+				<a class="waves-effect waves-light btn" href="/area_adm/servicos/registrar"><i class="material-icons left">add</i>Adicionar</a>
 
 				<table style="width:100%">
 					<thead>
 						<tr>
-							<th>Produto</th>
-							<th>Preço por Unidade</th>
-							<th>Quantidade</th>
+							<th>Editar</th>
+							<th>Nome</th>
+							<th>Preço</th>
+							<th>Horários Reservados</th>
 						</tr>
 					</thead>
-					<tbody id="cart_table">
-
-					</tbody>
+					<tbody id="services_table"></tbody>
 				</table>
-
-				<a class="right waves-effect waves-light btn" href="./carrinho_pag.html">Pagamento</a>
-
 			</div>
-		</main>
+		</div>
 
 	</body>
 </html>
