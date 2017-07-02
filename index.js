@@ -1,133 +1,55 @@
 var express = require('express');
-var fs = require('fs');
+var request = require('request');
+
+require('./js/urls.js')();
 
 // Inicializa app
 var app = express();
 app.listen(8080);
 app.use(express.static(__dirname + '/'));
 
+// Cria databases caso ainda não tenham sido criadas
+StartDB();
 
-// Página principal
-app.get('/', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/index.html');
-});
+// Inicializa as URLs usadas no site
+MainURLS(app, __dirname);
+LoginURLS(app, __dirname);
+UserAreaURLS(app, __dirname);
+AdmAreaURLS(app, __dirname);
 
-app.get('/carrinho', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/carrinho.html');
-});
+function StartDB(){
+    request('http://localhost:5984/doggos_users', function (error, response, body) {
+        if (response.statusCode == 404) {
+            request.put('http://localhost:5984/doggos_users');
+            console.log("Database doggos_users criado");
+        }
+    });
 
-app.get('/carrinho_pagamento', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/carrinho_pag.html');
-});
+    request('http://localhost:5984/doggos_products', function (error, response, body) {
+        if (response.statusCode == 404) {
+            request.put('http://localhost:5984/doggos_products');
+            console.log("Database doggos_products criado");
+        }
+    });
 
-// Login
-app.get('/login', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/login/login.html');
-});
+    request('http://localhost:5984/doggos_services', function (error, response, body) {
+        if (response.statusCode == 404) {
+            request.put('http://localhost:5984/doggos_services');
+            console.log("Database doggos_services criado");
+        }
+    });
 
-app.get('/cadastro', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/login/reg_cliente.html');
-});
+    request('http://localhost:5984/doggos_sales', function (error, response, body) {
+        if (response.statusCode == 404) {
+            request.put('http://localhost:5984/doggos_sales');
+            console.log("Database doggos_sales criado");
+        }
+    });
 
-// Área de Usuário
-app.get('/area_usuario', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_usuario/area_usuario.html');
-});
-
-app.get('/area_usuario/editar_usuario', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_usuario/edit_usuario.html');
-});
-
-
-app.get('/area_usuario/animais', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_usuario/table_animais.html');
-});
-
-app.get('/area_usuario/animais/registar', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_usuario/reg_animal.html');
-});
-
-app.get('/area_usuario/animais/visualizar', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_usuario/vis_animal.html');
-});
-
-app.get('/area_usuario/animais', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_usuario/table_animais.html');
-});
-
-
-app.get('/area_usuario/agenda', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_usuario/agenda.html');
-});
-
-app.get('/area_usuario/calendario', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_usuario/calendario.html');
-});
-
-app.get('/area_usuario/calendario/cadastro', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_usuario/calendario_cadastro.html');
-});
-
-
-
-// Área de Administração
-app.get('/area_adm', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_adm/area_adm.html');
-});
-
-app.get('/area_adm/cadastro', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_adm/reg_admin.html');
-});
-
-
-app.get('/area_adm/produtos', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_adm/table_prod.html');
-});
-
-app.get('/area_adm/produtos/registrar', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_adm/reg_prod.html');
-});
-
-app.get('/area_adm/produtos/vendas', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_adm/vendas_prod.html');
-});
-
-app.get('/area_adm/produtos/estoque', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_adm/update_prod.html');
-});
-
-
-app.get('/area_adm/servicos', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_adm/table_servico.html');
-});
-
-app.get('/area_adm/servicos/registrar', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_adm/reg_servico.html');
-});
-
-app.get('/area_adm/servicos/vendas', (req, res) => {
-    res.setHeader('Content-Type', 'text/html');
-    res.sendFile(__dirname + '/html/area_adm/vendas_servico.html');
-});
+    request('http://localhost:5984/doggos_animals', function (error, response, body) {
+        if (response.statusCode == 404) {
+            request.put('http://localhost:5984/doggos_animals');
+            console.log("Database doggos_animals criado");
+        }
+    });
+}
