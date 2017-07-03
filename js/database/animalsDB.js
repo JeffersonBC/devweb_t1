@@ -53,7 +53,7 @@ function AddAnimal (){
 		}
 		// Adicionando animal novo
 		else{
-			$.get('http://127.0.0.1:5984/_uuids', function(data, status){
+			$.get('http://localhost:5984/_uuids', function(data, status){
 				var animal = `{
 					\"name\": \"` + animal_name + `\",
 					\"species\": \"` + animal_species + `\",

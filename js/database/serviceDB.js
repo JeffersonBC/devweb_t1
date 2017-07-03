@@ -1,34 +1,22 @@
 // Função para iterar sobre os objetos serviços e renderizar a respectiva tabela
 function ServiceTable(){
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
-    open.onsuccess = function(event) {
-        var db 		 = open.result;
-        var trans 	 = db.transaction("ServiceStore", "readwrite");
-		var services = trans.objectStore("ServiceStore");
-
+    $.get('http://localhost:5984/doggos_services/_all_docs', function(data, status){
 		var services_table = $('#services_table');
 
-        services.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-				 services_table.append(
-					`<tr>
-						<td><a href="/area_adm/servicos/registrar?id=` + cursor.value.id + `"><i class="material-icons">edit</i></a></th>
-						<td>` + cursor.value.name + `</th>
-						<td>R$` + cursor.value.price + `</th>
-						<td>xx</th>
-					</tr>`
-				);
-				cursor.continue();
-			}
-        };
-
-		trans.oncomplete = function() {
-			db.close();
-		};
-	}
+		for (let i = 0; i < data.total_rows; i++){
+			$.get('http://localhost:5984/doggos_services/' + data.rows[i].id, function(service, status){
+                services_table.append(
+                    `<tr>
+                        <td>
+                            <a href="/area_adm/servicos/registrar?id=` + service._id + `&rev=` + service._rev + `">
+                            <i class="material-icons">edit</i></a></th>
+                        <td>` + service.name + `</th>
+                        <td>R$` + service.price + `</th>
+                    </tr>`
+                );
+            });
+        }
+    });
 }
 
 // Função para adicionar/ atualizar serviço
@@ -44,157 +32,94 @@ function AddService(){
 		error_box.addClass('card-panel red white-text');
 	}
 	else{
-		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+        var service_id = getParameterByName('id');
+        var service_rev = getParameterByName('rev');
 
-		open.onsuccess = function(event) {
-			var db = open.result;
-			var trans = db.transaction("ServiceStore", "readwrite");
-			var services = trans.objectStore("ServiceStore");
+        // Editando serviço existente
+		if (service_id && service_rev){
+			var service = `{
+				\"_rev\": \"` 	+ service_rev + `\",
+				\"name\": \"` 	+ service_name + `\",
+				\"desc\": \"`	+ service_desc + `\",
+				\"price\": \"` 	+ service_pric + `\"
+			}`;
 
-			var service_id = getParameterByName('id');
-			var service;
+			put('http://localhost:5984/doggos_services/' + service_id, service, "/area_adm/servicos");
+		}
+		// Adicionando serviço novo
+		else{
+			$.get('http://localhost:5984/_uuids', function(data, status){
+				var service = `{
+					\"name\": \"` 	+ service_name + `\",
+					\"desc\": \"`	+ service_desc + `\",
+					\"price\": \"` 	+ service_pric + `\"
+				}`;
 
-			if (service_id){
-				service = {
-					id: parseInt(service_id),
-					name: service_name,
-                    description: service_desc,
-                    price: service_pric
-				};
-			}
-			else {
-				service = {
-					name: service_name,
-                    description: service_desc,
-                    price: service_pric
-				};
-			}
-
-			services.put(service);
-
-			trans.oncomplete = function() {
-				db.close();
-				window.location.href = "/area_adm/servicos/";
-			};
+				put('http://localhost:5984/doggos_services/' + data.uuids[0], service, "/area_adm/servicos");
+			});
 		}
 	}
 }
 
+// Se estiver editando uma instância válida de um objeto serviço, inicializar página de acordo
+function GetEditedService(service_id){
+	$.get('http://localhost:5984/doggos_services/' + service_id, function(service, status){
+		$("#title")	.html("Editar Serviço");
+		$("#send")	.html("Salvar");
+
+		$("#name")			.val(service.name);
+		$("#description")	.val(service.desc);
+		$("#price")			.val(service.price);
+	});
+}
+
+
+
+// Inicializa os campos 'select' da página 'Agendar Serviço'
 function ShowScheduleService(){
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+    var animals_select = $('#animals_select');
+    var services_select = $('#services_select');
 
-    open.onsuccess = function(event) {
-        var db 		= open.result;
-        var trans 	= db.transaction(["AnimalsStore", "ServiceStore"], "readwrite");
-
-        var animals  = trans.objectStore("AnimalsStore");
-        var services = trans.objectStore("ServiceStore");
-
-		var animals_select = $('#animals_select');
-		var services_select = $('#services_select');
-
-        animals.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-				 animals_select.append(
-					`<option value="` + cursor.value.id  + `">` + cursor.value.name  + `</option>`
+    $.get('http://localhost:5984/doggos_animals/_all_docs', function(data, status){
+        for (let i = 0; i < data.total_rows; i++){
+			$.get('http://localhost:5984/doggos_animals/' + data.rows[i].id, function(animal, status){
+				animals_select.append(
+					`<option value="` + animal._id  + `">` + animal.name  + `</option>`
 				);
-				cursor.continue();
-			}
-        };
+                if (i == data.total_rows - 1)
+                    animals_select.material_select();
+			});
+        }
+    });
 
-        services.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-				 services_select.append(
-					`<option value="` + cursor.value.id  + `">` + cursor.value.name  + `</option>`
+    $.get('http://localhost:5984/doggos_services/_all_docs', function(data, status){
+        for (let i = 0; i < data.total_rows; i++){
+			$.get('http://localhost:5984/doggos_services/' + data.rows[i].id, function(service, status){
+				services_select.append(
+					`<option value="` + service._id  + `">` + service.name  + `</option>`
 				);
-				cursor.continue();
-			}
-        };
-
-		trans.oncomplete = function() {
-			$('select').material_select();
-            db.close();
-		};
-	}
+                if (i == data.total_rows - 1)
+                    services_select.material_select();
+			});
+        }
+    });
 }
 
-function ScheduleService(serv_id, serv_name, serv_price, anim_id, anim_name, date, time){
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
-    open.onsuccess = function(event) {
-        var db = open.result;
-        var trans = db.transaction("ScheduleStore", "readwrite");
-        var services = trans.objectStore("ScheduleStore");
-
-        var service = {
-            service_id:     parseInt(serv_id),
-            service_name:   serv_name,
-            service_price:  parseFloat(serv_price),
-            animal_id:      parseInt(anim_id),
-            animal_name:    anim_name,
-            date: date,
-            time: time
-        };
-
-        services.put(service);
-
-        trans.oncomplete = function() {
-            var error_box = $('#message');
-            error_box.html('Serviço agendado com sucesso.')
-            error_box.addClass('card-panel green white-text');
-            db.close();
-        };
-    }
-}
-
+// Redireciona 'Agendar Serviço' para a escolha de data, no serviço e para o animal selecionados
 function RedirectSchedule(){
-    var serv_id     = $('#services_select').val();
-    var serv_name   = $('#services_select :selected').text();
-    var serv_price;
-    var anim_id     = $('#animals_select').val();
-    var anim_name   = $('#animals_select :selected').text();
-    var serv_date   = $('#service_date').val();
+    var serv_id     = $('#services_select') .val();
+    var anim_id     = $('#animals_select')  .val();
+    var serv_date   = $('#service_date')    .val();
 
-
-    // Procura no DB o preço do serviço selecionado
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
-    open.onsuccess = function(event) {
-        var db 		 = open.result;
-        var trans 	 = db.transaction("ServiceStore", "readwrite");
-		var services = trans.objectStore("ServiceStore");
-
-        var getRequest = services.get(parseInt(serv_id));
-		getRequest.onsuccess = function(event) {
-            serv_price = getRequest.result.price;
-
-            trans.oncomplete = function() {
-                db.close();
-                window.location.href = "./calendario_cadastro.html?" +
-                    "serv_id="      + serv_id +
-                    "&serv_name="   + serv_name +
-                    "&serv_price="  + serv_price +
-                    "&anim_id="     + anim_id +
-                    "&anim_name="   + anim_name +
-                    "&serv_date="   + serv_date;
-            };
-        };
-	}
-
+    window.location.href = "/area_usuario/agendar/data_hora?" +
+        "serv_id="      + serv_id +
+        "&anim_id="     + anim_id +
+        "&serv_date="   + serv_date;
 }
 
 function ShowSchedeuleList(){
     var serv_id     = getParameterByName('serv_id');
-    var serv_name   = getParameterByName('serv_name');
-    var serv_price  = getParameterByName('serv_price');
     var anim_id     = getParameterByName('anim_id');
-    var anim_name   = getParameterByName('anim_name');
     var serv_date   = getParameterByName('serv_date');
 
     var cards = $('#cards');
@@ -204,17 +129,14 @@ function ShowSchedeuleList(){
                 <div class="card">
                     <div class="row" style="margin-bottom: 0; display: flex;">
                         <div class="m2 s3 col" style="display: inline-block;">
-                            <div class="green lighten-4 calendar-time center-align">
+                            <div class="green lighten-3 calendar-time center-align">
                                 <span>` + i + `h00</span>
                             </div>
                         </div>
                         <div class="m10 s9 col">
-                            <a class="card-title" href="./calendario_cadastro.html?` +
+                            <a class="card-title" href="/area_usuario/agendar/data_hora?` +
                                 `serv_id=`      + serv_id +
-                                `&serv_name=`   + serv_name +
-                                "&serv_price="  + serv_price +
                                 `&anim_id=`     + anim_id +
-                                `&anim_name=`   + anim_name +
                                 `&serv_date=`   + serv_date +
                                 `&serv_time=`   + i +
                             `">Agendar</a>
@@ -225,153 +147,119 @@ function ShowSchedeuleList(){
         );
     }
 
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
 
-    open.onsuccess = function(event) {
-        var db 		 = open.result;
-        var trans 	 = db.transaction("ScheduleStore", "readwrite");
-		var services = trans.objectStore("ScheduleStore");
-
-        services.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-                if(cursor.value.date == serv_date){
-                    $('#' + cursor.value.time).html(`
-                        <div class="card">
-                            <div class="row" style="margin-bottom: 0; display: flex;">
-                                <div class="m2 s3 col" style="display: inline-block;">
-                                    <div class="green lighten-1 white-text calendar-time center-align">
-                                        <span>` + cursor.value.time + `h00</span>
+    $.get('http://localhost:5984/doggos_shceduling/_all_docs', function(data, status){
+		for (let i = 0; i < data.total_rows; i++){
+			$.get('http://localhost:5984/doggos_shceduling/' + data.rows[i].id, function(schedule, status){
+                if(schedule.date == serv_date){
+                    // Busca serviço correspondente
+                    $.get('http://localhost:5984/doggos_services/' + schedule.service_id, function(service, status){
+                        // Busca animal correspondente
+                        $.get('http://localhost:5984/doggos_animals/' + schedule.animal_id, function(animal, status){
+                            // Renderiza card de slot ocupado
+                            $('#' + schedule.time).html(`
+                                <div class="card">
+                                    <div class="row" style="margin-bottom: 0; display: flex;">
+                                        <div class="m2 s3 col" style="display: inline-block;">
+                                            <div class="green lighten-1 white-text calendar-time center-align">
+                                                <span>` + schedule.time + `h00</span>
+                                            </div>
+                                        </div>
+                                        <div class="m10 s9 col">
+                                            <span class="card-title">` + service.name + `</span>
+                                            <br>
+                                            <strong>` + animal.name + `</strong>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="m10 s9 col">
-                                    <span class="card-title">` + cursor.value.service_name + `</span>
-                                    <br>
-                                    <strong>` + cursor.value.animal_name + `</strong>
-                                </div>
-                            </div>
-                        </div>
-                    `);
+                            `);
+                        });
+                    });
                 }
-				cursor.continue();
-			}
-        };
+			});
+        }
+	});
 
-		trans.oncomplete = function() {
-			db.close();
-		};
-	}
+}
+
+function ScheduleService(serv_id, anim_id, date, time){
+    $.get('http://localhost:5984/_uuids', function(data, status){
+        var schedule = `{
+            \"service_id\": \"` + serv_id + `\",
+            \"animal_id\": \"`	+ anim_id + `\",
+            \"date\":  \"` 	    + date + `\",
+            \"time\": \"` 	    + time + `\"
+        }`;
+
+        $.ajax({
+            method: "PUT",
+            url: 'http://localhost:5984/doggos_shceduling/' + data.uuids[0],
+            data: schedule,
+            success: function() {
+                var msg_box = $('#message');
+                msg_box.html('Serviço agendado com sucesso.')
+                msg_box.addClass('card-panel green white-text');
+
+                ShowSchedeuleList();
+            }
+        });
+    });
 }
 
 function ShowAnimalSchedule(animal_id){
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+    var animal_services = $('#animal_services');
 
-    open.onsuccess = function(event) {
-        var db 		 = open.result;
-        var trans 	 = db.transaction("ScheduleStore", "readwrite");
-		var services = trans.objectStore("ScheduleStore");
-
-        var animal_services = $('#animal_services');
-
-        services.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-                if(cursor.value.animal_id == animal_id){
-                    animal_services.append(`
-                        <div class="card">
-                            <div class="card-content">
-                                <span class="card-title">` + cursor.value.service_name +` </span>
-                                <p><span class="grey-text">Dia: </span>` + cursor.value.date + `</p>
-								<p><span class="grey-text">Hora: </span>` + cursor.value.time +`h00</p>
+    $.get('http://localhost:5984/doggos_shceduling/_all_docs', function(data, status){
+		for (let i = 0; i < data.total_rows; i++){
+			$.get('http://localhost:5984/doggos_shceduling/' + data.rows[i].id, function(schedule, status){
+                if(schedule.animal_id == animal_id){
+                    // Busca serviço correspondente
+                    $.get('http://localhost:5984/doggos_services/' + schedule.service_id, function(service, status){
+                        // Renderiza card de slot ocupado
+                        animal_services.append(`
+                            <div class="card">
+                                <div class="card-content">
+                                    <span class="card-title">` + service.name +` </span>
+                                    <p><span class="grey-text">Dia: </span>` + schedule.date + `</p>
+                                    <p><span class="grey-text">Hora: </span>` + schedule.time +`h00</p>
+                                </div>
                             </div>
-                        </div>
-                    `);
+                        `);
+                    });
                 }
-				cursor.continue();
-			}
-        };
-
-		trans.oncomplete = function() {
-			db.close();
-		};
-    }
-}
-
-function ServiceSalesTable(){
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
-    open.onsuccess = function(event) {
-        var db 		 = open.result;
-        var trans 	 = db.transaction("ScheduleStore", "readwrite");
-		var payments = trans.objectStore("ScheduleStore");
-
-		var serv_table = $('#serv_table');
-        var total = 0;
-
-        payments.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-                total += cursor.value.service_price;
-
-                serv_table.append(
-					`<tr>
-                        <td>` + cursor.value.service_name + `</td>
-                        <td>` + cursor.value.animal_name + `</td>
-                        <td>` + cursor.value.date + `</td>
-                        <td>` + cursor.value.time + `</td>
-                        <td>` + cursor.value.service_price + `</td>
-                    </tr>`
-				);
-
-				cursor.continue();
-			}
-        };
-
-		trans.oncomplete = function() {
-            $('#total_sales').html(total);
-            db.close();
-		};
-	}
+			});
+        }
+	});
 }
 
 function ShowUserSchedule(){
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+    var cards = $('#cards');
 
-    open.onsuccess = function(event) {
-        console.log(".");
+    $.get('http://localhost:5984/doggos_shceduling/_all_docs', function(data, status){
+		for (let i = 0; i < data.total_rows; i++){
+			$.get('http://localhost:5984/doggos_shceduling/' + data.rows[i].id, function(schedule, status){
+                //if(schedule.user_id == user_id){
+                    // Busca serviço correspondente
+                    $.get('http://localhost:5984/doggos_services/' + schedule.service_id, function(service, status){
+                        // Busca animal correspondente
+                        $.get('http://localhost:5984/doggos_animals/' + schedule.animal_id, function(animal, status){
 
-        var db 		 = open.result;
-        var trans 	 = db.transaction("ScheduleStore", "readwrite");
-		var payments = trans.objectStore("ScheduleStore");
-
-		var cards = $('#cards');
-
-        payments.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-                cards.append(
-					`<div class="col s12 m6 l6">
-						<div class="card">
-							<div class="card-content">
-								<div class="card-title">` + cursor.value.animal_name + `</div>
-								<span style="color:gray;">Serviço:</span> ` + cursor.value.service_name + `<br>
-								<span style="color:gray;">Dia:</span> ` + cursor.value.date + `<br>
-								<span style="color:gray;">Horário:</span> ` + cursor.value.time + `h 00
-							</div>
-						</div>
-					</div>`
-				);
-
-				cursor.continue();
-			}
-        };
-
-		trans.oncomplete = function() {
-            db.close();
-		};
-	}
+                            cards.append(
+                                `<div class="col s12 m6 l6">
+                                    <div class="card">
+                                        <div class="card-content">
+                                            <div class="card-title">` + animal.name + `</div>
+                                            <span style="color:gray;">Serviço:</span> ` + service.name + `<br>
+                                            <span style="color:gray;">Dia:</span> ` + schedule.date + `<br>
+                                            <span style="color:gray;">Horário:</span> ` + schedule.time + `h 00
+                                        </div>
+                                    </div>
+                                </div>`
+                            );
+                        });
+                    });
+                //}
+            });
+        }
+    });
 }

@@ -16,7 +16,8 @@ function put (_url, _data, _redirect){
 		url: _url,
 		data: _data,
 		success: function(data, status) {
-			window.location.href = _redirect;
+			if (_redirect)
+				window.location.href = _redirect;
 		}
 	});
 }

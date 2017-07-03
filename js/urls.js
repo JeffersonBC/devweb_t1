@@ -71,12 +71,12 @@ module.exports = function(){
             res.sendFile(dir + '/html/area_usuario/agenda.html');
         });
 
-        app.get('/area_usuario/calendario', (req, res) => {
+        app.get('/area_usuario/agendar', (req, res) => {
             res.setHeader('Content-Type', 'text/html');
             res.sendFile(dir + '/html/area_usuario/calendario.html');
         });
 
-        app.get('/area_usuario/calendario/cadastro', (req, res) => {
+        app.get('/area_usuario/agendar/data_hora', (req, res) => {
             res.setHeader('Content-Type', 'text/html');
             res.sendFile(dir + '/html/area_usuario/calendario_cadastro.html');
         });

@@ -16,8 +16,8 @@
 		<script src="/js/jquery-3.2.1.min.js"></script>
 		<script src="/js/materialize.js"></script>
 		<script src="/js/menus.js"></script>
-		<script src="/js/database.js"></script>
-		<script src="/js/serviceDB.js"></script>
+		<script src="/js/database/database.js"></script>
+		<script src="/js/database/serviceDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
@@ -26,20 +26,16 @@
 				$(".button-collapse").sideNav();
 
 				var serv_id = getParameterByName('serv_id');
-				var serv_name = getParameterByName('serv_name');
-				var serv_price = getParameterByName('serv_price');
-
 				var anim_id = getParameterByName('anim_id');
-				var anim_name = getParameterByName('anim_name');
-
 				var serv_date = getParameterByName('serv_date');
 				var serv_time = getParameterByName('serv_time');
 
-				if (serv_id && serv_name && serv_price && anim_id && anim_name && serv_date && serv_time){
-					ScheduleService(serv_id, serv_name, serv_price, anim_id, anim_name, serv_date, serv_time);
+				if (serv_id && anim_id && serv_date && serv_time){
+					ScheduleService(serv_id, anim_id, serv_date, serv_time);
 				}
-
-				ShowSchedeuleList();
+				else{
+					ShowSchedeuleList();
+				}
 			});
 		</script>
 	</head>
@@ -51,7 +47,7 @@
 			<div class="container">
 				<h1>Agendar Serviço</h1>
 				<div id="message"></div>
-				<a href="./calendario.html" class="btn waves-effect waves-light">Agendar outro serviço</a>
+				<a href="/area_usuario/agendar" class="btn waves-effect waves-light">Agendar outro serviço</a>
 
 				<br><br><br>
 				<div id="cards"></div>

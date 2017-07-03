@@ -180,7 +180,7 @@ function StartSidebarUser (){
             <div class="divider hide-on-large-only"></div>
 
             <li class="hide-on-large-only"><a href="/carrinho">Carrinho</a></li>
-            <li class="hide-on-large-only"><a href="/agenda">Agenda</a></li>
+            <li class="hide-on-large-only"><a href="/area_usuario/agenda">Agenda</a></li>
             <li class="hide-on-large-only" id="link_adm_side"><a href="/area_adm">Área de Adminstração</a></li>
 
             <div class="divider"></div>
@@ -190,7 +190,7 @@ function StartSidebarUser (){
 
             <div class="divider"></div>
 
-            <li><a href="/area_usuario/calendario">Agendar Serviço</a></li>
+            <li><a href="/area_usuario/agendar">Agendar Serviço</a></li>
             <li><a href="/area_usuario/animais">Gerenciar Animais</a></li>
 
             <div class="divider"></div>

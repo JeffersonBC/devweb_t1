@@ -39,6 +39,13 @@ function StartDB(){
         }
     });
 
+    request('http://localhost:5984/doggos_shceduling', function (error, response, body) {
+        if (response.statusCode == 404) {
+            request.put('http://localhost:5984/doggos_shceduling');
+            console.log("Database doggos_shceduling criado");
+        }
+    });
+
     request('http://localhost:5984/doggos_sales', function (error, response, body) {
         if (response.statusCode == 404) {
             request.put('http://localhost:5984/doggos_sales');

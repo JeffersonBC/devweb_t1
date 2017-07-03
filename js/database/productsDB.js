@@ -1,35 +1,25 @@
 // Função para iterar sobre os objetos produtos e renderizar a respectiva tabela
 function ProductTable (){
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
-    open.onsuccess = function(event) {
-        var db 		= open.result;
-        var trans 	= db.transaction("ProductStore", "readwrite");
-		var products = trans.objectStore("ProductStore");
-
+	$.get('http://localhost:5984/doggos_products/_all_docs', function(data, status){
 		var products_table = $('#products_table');
 
-        products.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-				 products_table.append(
+		for (let i = 0; i < data.total_rows; i++){
+			$.get('http://localhost:5984/doggos_products/' + data.rows[i].id, function(product, status){
+				products_table.append(
 					`<tr class="table-itens">
-						<td><a href="/area_adm/produtos/registrar?id=` + cursor.value.id + `"><i class="material-icons">edit</i></a></th>
-						<td>` + cursor.value.name + `</th>
-						<td>` + cursor.value.price + `</th>
-						<td>` + cursor.value.qtd + `</th>
-						<td><a href="./update_prod.html"><i class="material-icons">update</i></a></th>
+						<td>
+							<a href="/area_adm/produtos/registrar?id=` + product._id + `&rev=` + product._rev + `">
+							<i class="material-icons">edit</i></a></th>
+						<td>` + product.name + `</th>
+						<td>` + product.price + `</th>
+						<td>` + product.qtd + `</th>
+						<td>
+							<a href="./update_prod.html"><i class="material-icons">update</i></a></th>
 					</tr>`
 				);
-				cursor.continue();
-			}
-        };
-
-		trans.oncomplete = function() {
-			db.close();
-		};
-	}
+			});
+		}
+	});
 }
 
 // Função para adicionar/ atualizar produto
@@ -46,108 +36,73 @@ function AddProduct (){
 		error_box.addClass('card-panel red white-text');
 	}
 	else{
-		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+		var product_id = getParameterByName('id');
+		var product_rev = getParameterByName('rev');
+		var product;
 
-		open.onsuccess = function(event) {
-			var db = open.result;
-			var trans = db.transaction("ProductStore", "readwrite");
-			var products = trans.objectStore("ProductStore");
+		// Editando produto existente
+		if (product_id && product_rev){
+			var product = `{
+				\"_rev\": \"` 	+ product_rev + `\",
+				\"name\": \"` 	+ product_name + `\",
+				\"desc\": \"`	+ product_desc + `\",
+				\"qtd\":  \"` 	+ product_qtd + `\",
+				\"price\": \"` 	+ product_price + `\"
+			}`;
 
-			var product_id = getParameterByName('id');
-			var product;
+			put('http://localhost:5984/doggos_products/' + product_id, product, "/area_adm/produtos");
+		}
+		// Adicionando produto novo
+		else{
+			$.get('http://localhost:5984/_uuids', function(data, status){
+				var product = `{
+					\"name\": \"` 	+ product_name + `\",
+					\"desc\": \"`	+ product_desc + `\",
+					\"qtd\":  \"` 	+ product_qtd + `\",
+					\"price\": \"` 	+ product_price + `\"
+				}`;
 
-			if (product_id){
-				product = {
-					id: parseInt(product_id),
-					name: product_name,
-                    description: product_desc,
-                    qtd : product_qtd,
-                    price: product_price
-				};
-			}
-			else {
-				product = {
-					name: product_name,
-                    description: product_desc,
-                    qtd : product_qtd,
-                    price: product_price
-				};
-			}
-
-			products.put(product);
-
-			trans.oncomplete = function() {
-				db.close();
-				window.location.href = "/area_adm/produtos/";
-			};
+				put('http://localhost:5984/doggos_products/' + data.uuids[0], product, "/area_adm/produtos");
+			});
 		}
 	}
 }
 
 // Se estiver editando uma instância válida de um objeto produto, inicializar página de acordo
 function GetEditedProduct(product_id){
-	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-	var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+	$.get('http://localhost:5984/doggos_products/' + product_id, function(product, status){
+		$("#title")	.html("Editar Produto");
+		$("#send")	.html("Salvar");
 
-	open.onsuccess = function(event) {
-		var db = open.result;
-		var trans = db.transaction(['ProductStore'], 'readonly');
-		var products = trans.objectStore('ProductStore');
-
- 		var getRequest = products.get(parseInt(product_id));
-
-		getRequest.onsuccess = function(event) {
-			$("#title").html("Editar Produto");
-			$("#send").html("Salvar");
-
-			$("#name").val(getRequest.result.name);
-			$("#description").val(getRequest.result.description);
-			$("#qtd").val(getRequest.result.qtd);
-			$("#price").val(getRequest.result.price);
-		};
-
-		trans.oncomplete = function() {
-			db.close();
-		};
-	}
+		$("#name")			.val(product.name);
+		$("#description")	.val(product.desc);
+		$("#qtd")			.val(product.qtd);
+		$("#price")			.val(product.price);
+	});
 }
 
 // Função renderizar produtos na página inicial
 function ProductCards (){
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
-    open.onsuccess = function(event) {
-        var db 		= open.result;
-        var trans 	= db.transaction("ProductStore", "readwrite");
-		var products = trans.objectStore("ProductStore");
-
+    $.get('http://localhost:5984/doggos_products/_all_docs', function(data, status){
 		var products_table = $('#products_row');
 
-        products.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-				 products_table.append(
+		for (let i = 0; i < data.total_rows; i++){
+			$.get('http://localhost:5984/doggos_products/' + data.rows[i].id, function(product, status){
+				products_table.append(
 					`<div class="col s12 m6 l4">
 						<div class="card">
 							<div class="card-content">
-								<span class="card-title">` + cursor.value.name + `</span>
-								<p><span class="grey-text">Preço: </span>R$` + cursor.value.price + `</p>
-								<p>` + cursor.value.description + `</p>
+								<span class="card-title">` + product.name + `</span>
+								<p><span class="grey-text">Preço: </span>R$` + parseFloat(product.price).toFixed(2) + `</p>
+								<p>` + product.desc + `</p>
 							</div>
-                            <div class="card-action">
-                                <a href="/carrinho?id=` + cursor.value.id + `">Adicionar ao Carrinho</a>
-                            </div
+							<div class="card-action">
+								<a href="/carrinho?id=` + product.id + `">Adicionar ao Carrinho</a>
+							</div
 						</div>
 					</div>`
 				);
-				cursor.continue();
-			}
-        };
-
-		trans.oncomplete = function() {
-			db.close();
-		};
-	}
+			});
+		}
+	});
 }

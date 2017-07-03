@@ -191,6 +191,8 @@ function AddPayment(){
     }
 }
 
+
+// ===
 function ProductSalesTable(){
     var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
     var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
@@ -212,6 +214,44 @@ function ProductSalesTable(){
 					`<tr>
                         <td>` + cursor.value.name + `</td>
                         <td>` + cursor.value.price + `</td>
+                    </tr>`
+				);
+
+				cursor.continue();
+			}
+        };
+
+		trans.oncomplete = function() {
+            $('#total_sales').html(total);
+            db.close();
+		};
+	}
+}
+
+function ServiceSalesTable(){
+    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+
+    open.onsuccess = function(event) {
+        var db 		 = open.result;
+        var trans 	 = db.transaction("ScheduleStore", "readwrite");
+		var payments = trans.objectStore("ScheduleStore");
+
+		var serv_table = $('#serv_table');
+        var total = 0;
+
+        payments.openCursor().onsuccess = function(event) {
+        	var cursor = event.target.result;
+			if (cursor) {
+                total += cursor.value.service_price;
+
+                serv_table.append(
+					`<tr>
+                        <td>` + cursor.value.service_name + `</td>
+                        <td>` + cursor.value.animal_name + `</td>
+                        <td>` + cursor.value.date + `</td>
+                        <td>` + cursor.value.time + `</td>
+                        <td>` + cursor.value.service_price + `</td>
                     </tr>`
 				);
 
