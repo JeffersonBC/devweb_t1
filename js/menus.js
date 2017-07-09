@@ -1,6 +1,3 @@
-// Os menus estão sendo feitos como strings por não ser possível fazer um XMLHttpRequest sem um servidor local.
-// Na próxima entrega, quando haverá um servidor local, essas funções serão substituídas para carregar um arquivo html no lugar dessa gambiarra com strings.
-
 function StartNavbar (){
     $('#navbar').html(`
         <div class="navbar-fixed">
