@@ -11,7 +11,7 @@ function ProductTable (){
 							<a href="/area_adm/produtos/registrar?id=` + product._id + `&rev=` + product._rev + `">
 							<i class="material-icons">edit</i></a></th>
 						<td>` + product.name + `</th>
-						<td>` + product.price + `</th>
+						<td>` + parseFloat(product.price).toFixed(2) + `</th>
 						<td>` + product.qtd + `</th>
 						<td>
 							<a href="./update_prod.html"><i class="material-icons">update</i></a></th>
@@ -97,7 +97,7 @@ function ProductCards (){
 								<p>` + product.desc + `</p>
 							</div>
 							<div class="card-action">
-								<a href="/carrinho?id=` + product.id + `">Adicionar ao Carrinho</a>
+								<a href="/carrinho?id=` + product._id + `">Adicionar ao Carrinho</a>
 							</div
 						</div>
 					</div>`

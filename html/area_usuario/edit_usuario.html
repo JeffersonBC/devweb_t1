@@ -16,14 +16,16 @@
 		<script src="/js/jquery-3.2.1.min.js"></script>
 		<script src="/js/materialize.js"></script>
 		<script src="/js/menus.js"></script>
-		<script src="/js/database.js"></script>
-		<script src="/js/usersDB.js"></script>
+		<script src="/js/database/database.js"></script>
+		<script src="/js/database/usersDB.js"></script>
 
 		<script>
+			RequireLogin();
 			$(document).ready(function() {
 				StartNavbarUser();
 				StartSidebarUser();
 				$(".button-collapse").sideNav();
+				CheckAdm();
 
 				GetEditedUser();
 			});
@@ -39,10 +41,10 @@
 					<h2>Editar Cadastro</h2><br>
 					<div id="warning"></div>
 
-					<label>Senha:</label>
+					<label>Nova Senha:</label>
 					<input type="password" name="pass1" id="pass1">
 
-					<label>Confirmar Senha:</label>
+					<label>Confirmar Nova Senha:</label>
 					<input type="password" name="pass2" id="pass2">
 
 					<label>Nome:</label>

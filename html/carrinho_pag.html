@@ -10,16 +10,17 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link rel="stylesheet" href="./css/materialize.css">
-		<link rel="stylesheet" href="./css/petstyle.css">
+		<link rel="stylesheet" href="/css/materialize.css">
+		<link rel="stylesheet" href="/css/petstyle.css">
 
-		<script src="./js/jquery-3.2.1.min.js"></script>
-		<script src="./js/materialize.js"></script>
-		<script src="./js/menus.js"></script>
-		<script src="./js/database.js"></script>
-		<script src="./js/salesDB.js"></script>
+		<script src="/js/jquery-3.2.1.min.js"></script>
+		<script src="/js/materialize.js"></script>
+		<script src="/js/menus.js"></script>
+		<script src="/js/database/database.js"></script>
+		<script src="/js/database/salesDB.js"></script>
 
 		<script>
+			RequireLogin();
 			$(document).ready(function() {
 				StartNavbar();
 				StartSidebar();
@@ -41,7 +42,7 @@
 					<div class="card">
 						<div class="card-content">
 							<label>Valor Total:</label>
-							<p>R$<span id="price"></span></p>
+							<p>R$<span id="price">0,00</span></p>
 						</div>
 					</div>
 

@@ -1,6 +1,6 @@
 // Função para adicionar/ atualizar user
-function AddUser(){
-	var user_id 	 = $('#Id').val();
+function AddUser(is_admin){
+	var user_login 	 = $('#Id').val();
 	var user_pass1 	 = $('#pass1').val();
 	var user_pass2 	 = $('#pass2').val();
 	var user_name 	 = $('#name').val();
@@ -10,100 +10,30 @@ function AddUser(){
 
 	// Se as senhas forem diferentes
 	if (user_pass1 != user_pass2){
-
 		var error_box = $('#warning');
 		error_box.html('As senhas nao coincidem')
 		error_box.addClass('card-panel red white-text');
 
 	}
 	// Se algum campo estiver vazio, mostra mensagem de erro
-	else if (!user_id || !user_pass1 || !user_name || !user_email || !user_address){
+	else if (!user_login || !user_pass1 || !user_name || !user_email || !user_address){
 		var error_box = $('#warning');
-		error_box.html('Um ou mais campos est�o vazios, por tanto n�o foi poss�vel salvar')
+		error_box.html('Um ou mais campos estão vazios, por tanto não foi possível salvar')
 		error_box.addClass('card-panel red white-text');
 	}
 	else{
-
-		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
-		open.onsuccess = function(event) {
-
-			var db = open.result;
-			var trans = db.transaction("UsersStore", "readwrite");
-			var users = trans.objectStore("UsersStore");
-
+		$.get('http://localhost:5984/_uuids', function(data, status){
 			user = {
-				id: 	  user_id,
+				login: 	  user_login,
 				name: 	  user_name,
 				email: 	  user_email,
 				pass: 	  user_pass1,
 				address:  user_address,
-				is_admin: false
+				is_admin: is_admin
 			};
 
-			users.put(user);
-
-			trans.oncomplete = function() {
-				db.close();
-				window.location.href = "/login?reg=true";
-			};
-		}
-	}
-}
-
-// Função para adicionar/ atualizar user
-function AddAdmin(){
-	var user_id 	 = $('#Id').val();
-	var user_pass1 	 = $('#pass1').val();
-	var user_pass2 	 = $('#pass2').val();
-	var user_name 	 = $('#name').val();
-	var user_email 	 = $('#email').val();
-	var user_address = $('#address').val();
-	var user_foto 	 = $('#foto').val();
-
-	// Se as senhas forem diferentes
-	if (user_pass1 != user_pass2){
-
-		var error_box = $('#warning');
-		error_box.html('As senhas nao coincidem')
-		error_box.addClass('card-panel red white-text');
-
-	}
-	// Se algum campo estiver vazio, mostra mensagem de erro
-	else if (!user_id || !user_pass1 || !user_name || !user_email || !user_address){
-		var error_box = $('#warning');
-		error_box.html('Um ou mais campos est�o vazios, por tanto n�o foi poss�vel salvar')
-		error_box.addClass('card-panel red white-text');
-	}
-	else{
-
-		var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
-		open.onsuccess = function(event) {
-
-			var db = open.result;
-			var trans = db.transaction("UsersStore", "readwrite");
-			var users = trans.objectStore("UsersStore");
-
-			user = {
-				id: 	  user_id,
-				name: 	  user_name,
-				email: 	  user_email,
-				pass: 	  user_pass1,
-				address:  user_address,
-				is_admin: true
-			};
-
-			users.put(user);
-
-
-			trans.oncomplete = function() {
-				db.close();
-				window.location.href = "/area_adm?reg=true";
-			};
-		}
+			put('http://localhost:5984/doggos_users/' + data.uuids[0], JSON.stringify(user), "/login?reg=true");
+		});
 	}
 }
 
@@ -125,7 +55,7 @@ function EditUser(){
 	// Se algum campo estiver vazio, mostra mensagem de erro
 	else if (!user_pass1 || !user_name || !user_email || !user_address){
 		var error_box = $('#warning');
-		error_box.html('Um ou mais campos est�o vazios, por tanto n�o foi poss�vel salvar')
+		error_box.html('Um ou mais campos estão vazios, por tanto não foi possível salvar')
 		error_box.addClass('card-panel red white-text');
 	}
 	else{
@@ -135,29 +65,26 @@ function EditUser(){
 		open.onsuccess = function(event) {
 
 			var db = open.result;
-			var trans = db.transaction(["UsersStore", "UserLoggedIn"], "readwrite");
-			var users = trans.objectStore("UsersStore");
+			var trans = db.transaction(["UserLoggedIn"], "readwrite");
 			var currentUser = trans.objectStore("UserLoggedIn");
 
 			currentUser.openCursor().onsuccess = function(event) {
 				var cursor = event.target.result;
 				if (cursor) {
-					user = {
-						id: 	  cursor.value.id,
-						name: 	  user_name,
-						email: 	  user_email,
-						pass: 	  user_pass1,
-						address:  user_address,
-						is_admin: cursor.value.is_admin
-					};
+					$.get('http://localhost:5984/doggos_users/' + cursor.value.id, function(user, status){
+						var edited_user = {
+							_rev: 	  user._rev,
+							login:	  user.login,
+							name: 	  user_name,
+							email: 	  user_email,
+							pass: 	  user_pass1,
+							address:  user_address,
+							is_admin: user.is_admin
+						};
 
-					cursor.update(user);
-					users.put(user);
-
-					trans.oncomplete = function() {
-						db.close();
-						window.location.href = "/area_usuario?reg=true";
-					};
+						trans.oncomplete = function() { db.close(); };
+						put('http://localhost:5984/doggos_users/' + user._id, JSON.stringify(edited_user), "/area_usuario?reg=true");
+					});
 				}
 			};
 
@@ -177,11 +104,16 @@ function GetEditedUser(){
 		user.openCursor().onsuccess = function(event) {
         	var cursor = event.target.result;
 			if (cursor) {
-				$("#pass1")		.val(cursor.value.pass);
-				$("#pass2")		.val(cursor.value.pass);
-				$("#name")		.val(cursor.value.name);
-				$("#email")		.val(cursor.value.email);
-				$("#address")	.val(cursor.value.address);
+				user.openCursor().onsuccess = function(event) {
+					var cursor = event.target.result;
+					if (cursor) {
+						$.get('http://localhost:5984/doggos_users/' + cursor.value.id, function(user, status){
+							$("#name")		.val(user.name);
+							$("#email")		.val(user.email);
+							$("#address")	.val(user.address);
+						});
+					}
+				};
 			}
         };
 
@@ -205,71 +137,64 @@ function Login() {
 		error_box.html('Informe a senha');
 		error_box.addClass('card-panel red white-text');
 	}
-	else
-	{
-		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+	else{
+		var users_dict = {}
+		$.get('http://localhost:5984/doggos_users/_all_docs', function(data, status){
+			for (let i = 0; i < data.total_rows; i++){
+				$.get('http://localhost:5984/doggos_users/' + data.rows[i].id, function(user, status){
+					users_dict[user.login] = {
+						pw: user.pass,
+						id: user._id
+					};
 
-		open.onsuccess = function(event) {
-			var db = open.result;
-			var trans = db.transaction(['UsersStore', 'UserLoggedIn'], 'readwrite');
+					if (i == data.total_rows - 1){
+						// Usuário não existe
+						if (!users_dict[user_id]){
+							var error_box = $('#warning');
+							error_box.html('Nome de usuário não existe');
+							error_box.addClass('card-panel red white-text');
 
-			var users = trans.objectStore('UsersStore');
-			var userLoggedIn = trans.objectStore('UserLoggedIn');
+							trans.oncomplete = function() {
+								db.close();
+							};
+						}
 
-			var getUser = users.get(user_id);
-			getUser.onsuccess = function() {
-				if(getUser.result){
-					// Usuário existe mas senha está errada
-					if (getUser.result.pass != user_pass1){
-						var error_box = $('#warning');
-						error_box.html('Senha incorreta');
-						error_box.addClass('card-panel red white-text');
+						// Usuário existe mas senha está errada
+						else if (users_dict[user_id] && users_dict[user_id].pw != user_pass1){
+							var error_box = $('#warning');
+							error_box.html('Senha incorreta');
+							error_box.addClass('card-panel red white-text');
 
-						trans.oncomplete = function() {
-							db.close();
-						};
-					}
+							trans.oncomplete = function() {
+								db.close();
+							};
+						}
 
-					// Credenciais corretas
-					else{
-						userLoggedIn.openCursor().onsuccess = function(event) {
-							var cursor = event.target.result;
-							if (cursor) {
-								cursor.delete();
-								cursor.continue();
-							}
-							else {
+						// Credenciais corretas
+						else{
+							var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+							open.onsuccess = function(event) {
+								var db = open.result;
+								var trans = db.transaction(['UserLoggedIn'], 'readwrite');
+
 								user = {
-									id: 	  getUser.result.id,
-									name: 	  getUser.result.name,
-									email: 	  getUser.result.email,
-									pass: 	  getUser.result.pass,
-									address:  getUser.result.address,
-									is_admin: getUser.result.is_admin
+									id: users_dict[user_id].id,
 								};
 
-								userLoggedIn.put(user);
-
+							 	trans.objectStore('UserLoggedIn').put(user);
 								trans.oncomplete = function() {
 									db.close();
 									window.location.href = "/";
 								};
 							}
-						};
-					}
-				}
-				// Usuário não existe
-				else {
-					var error_box = $('#warning');
-					error_box.html('Nome de usuário não existe');
-					error_box.addClass('card-panel red white-text');
+						}
 
-					trans.oncomplete = function() {
-						db.close();
-					};
-				}
-			};
-		}
+					}
+				});
+			}
+		});
+
+
 	}
 }
 
@@ -317,31 +242,5 @@ function LoggedUserName(){
 		trans.oncomplete = function() {
 			db.close();
 		};
-	}
-}
-
-function CheckAdm(){
-	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
-    open.onsuccess = function(event) {
-        var db 	  = open.result;
-        var trans = db.transaction("UserLoggedIn", "readwrite");
-		var user  = trans.objectStore("UserLoggedIn");
-
-        user.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-				if (cursor.value.is_admin != true){
-					$('#link_adm').remove();
-					$('#link_adm_side').remove();
-				}
-			}
-			else {
-				trans.oncomplete = function() {
-					db.close();
-				};
-			}
-        };
 	}
 }

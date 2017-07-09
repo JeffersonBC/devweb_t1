@@ -21,10 +21,12 @@
 		<script src="/js/database/serviceDB.js"></script>
 
 		<script>
+			RequireLogin();
 			$(document).ready(function() {
 				StartNavbarUser();
 				StartSidebarUser();
 				$(".button-collapse").sideNav();
+				CheckAdm();
 
 				var id = getParameterByName('id');
 				if (id){
