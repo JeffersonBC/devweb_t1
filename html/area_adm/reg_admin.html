@@ -16,8 +16,8 @@
 		<script src="/js/jquery-3.2.1.min.js"></script>
 		<script src="/js/materialize.js"></script>
 		<script src="/js/menus.js"></script>
-		<script src="/js/database.js"></script>
-		<script src="/js/usersDB.js"></script>
+		<script src="/js/database/database.js"></script>
+		<script src="/js/database/usersDB.js"></script>
 
 		<script>
 			$(document).ready(function() {
@@ -58,7 +58,7 @@
 					<input type="file" name="foto" id="foto">
 
 				</form>
-				<button class="waves-effect waves-light btn right" onclick="AddAdmin()">Cadastrar</button>
+				<button class="waves-effect waves-light btn right" onclick="AddUser(true)">Cadastrar</button>
 			</div>
 		</main>
 

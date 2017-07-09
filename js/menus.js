@@ -14,7 +14,7 @@ function StartNavbar (){
                     </a>
                     <ul class="right hide-on-med-and-down">
                         <li><a href="/carrinho">Carrinho</a></li>
-                        <li><a href="/agenda">Agenda</a></li>
+                        <li><a href="/area_usuario/agenda">Agenda</a></li>
                         <li><a href="/area_usuario">Área de usuário</a></li>
                     </ul>
                 </div>
@@ -32,7 +32,7 @@ function StartSidebar (){
             <div class="divider hide-on-large-only"></div>
 
             <li class="hide-on-large-only"><a href="/carrinho">Carrinho</a></li>
-            <li class="hide-on-large-only"><a href="/agenda">Agenda</a></li>
+            <li class="hide-on-large-only"><a href="/area_usuario/agenda">Agenda</a></li>
             <li class="hide-on-large-only"><a href="/area_usuario">Área de usuário</a></li>
 
             <div class="divider"></div>
@@ -49,7 +49,7 @@ function StartSidebar (){
             <li><a href="#">Banho e Tosa</a></li>
             <li><a href="#">Pet-Hotel</a></li>
             <li><a href="#">Veterinário</a></li>
-            <li><a href="/calendario">Agendar Serviço</a></li>
+            <li><a href="/area_usuario/agendar">Agendar Serviço</a></li>
             <li><a href="/area_usuario/animais">Gerenciar Animais</a></li>
         </ul>
     `);

@@ -37,25 +37,25 @@ function AddService(){
 
         // Editando serviço existente
 		if (service_id && service_rev){
-			var service = `{
-				\"_rev\": \"` 	+ service_rev + `\",
-				\"name\": \"` 	+ service_name + `\",
-				\"desc\": \"`	+ service_desc + `\",
-				\"price\": \"` 	+ service_pric + `\"
-			}`;
+			var service = {
+				_rev: service_rev,
+				name: service_name,
+				desc: service_desc,
+				price: service_pric
+			};
 
-			put('http://localhost:5984/doggos_services/' + service_id, service, "/area_adm/servicos");
+			put('http://localhost:5984/doggos_services/' + service_id, JSON.stringify(service), "/area_adm/servicos");
 		}
 		// Adicionando serviço novo
 		else{
 			$.get('http://localhost:5984/_uuids', function(data, status){
-				var service = `{
-					\"name\": \"` 	+ service_name + `\",
-					\"desc\": \"`	+ service_desc + `\",
-					\"price\": \"` 	+ service_pric + `\"
-				}`;
+				var service = {
+					name: service_name,
+					desc: service_desc,
+					price: service_pric
+				};
 
-				put('http://localhost:5984/doggos_services/' + data.uuids[0], service, "/area_adm/servicos");
+				put('http://localhost:5984/doggos_services/' + data.uuids[0], JSON.stringify(service), "/area_adm/servicos");
 			});
 		}
 	}
@@ -81,14 +81,28 @@ function ShowScheduleService(){
     var services_select = $('#services_select');
 
     $.get('http://localhost:5984/doggos_animals/_all_docs', function(data, status){
-        for (let i = 0; i < data.total_rows; i++){
-			$.get('http://localhost:5984/doggos_animals/' + data.rows[i].id, function(animal, status){
-				animals_select.append(
-					`<option value="` + animal._id  + `">` + animal.name  + `</option>`
-				);
-                if (i == data.total_rows - 1)
-                    animals_select.material_select();
-			});
+
+        // Abrindo IndexedDB para pegar id de usuário atual
+		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+		open.onsuccess = function(event) {
+			var db = open.result;
+			var trans = db.transaction(['UserLoggedIn'], 'readonly');
+			trans.objectStore('UserLoggedIn').openCursor().onsuccess = function(event) {
+				var cursor = event.target.result;
+				if (cursor) {
+                    for (let i = 0; i < data.total_rows; i++){
+                        $.get('http://localhost:5984/doggos_animals/' + data.rows[i].id, function(animal, status){
+                            if (cursor.value.id == animal.owner_id){
+                                animals_select.append(
+                                    `<option value="` + animal._id  + `">` + animal.name  + `</option>`
+                                );
+                            }
+                            if (i == data.total_rows - 1)
+                                animals_select.material_select();
+                        });
+                    }
+                }
+            }
         }
     });
 
@@ -184,25 +198,41 @@ function ShowSchedeuleList(){
 
 function ScheduleService(serv_id, anim_id, date, time){
     $.get('http://localhost:5984/_uuids', function(data, status){
-        var schedule = `{
-            \"service_id\": \"` + serv_id + `\",
-            \"animal_id\": \"`	+ anim_id + `\",
-            \"date\":  \"` 	    + date + `\",
-            \"time\": \"` 	    + time + `\"
-        }`;
 
-        $.ajax({
-            method: "PUT",
-            url: 'http://localhost:5984/doggos_shceduling/' + data.uuids[0],
-            data: schedule,
-            success: function() {
-                var msg_box = $('#message');
-                msg_box.html('Serviço agendado com sucesso.')
-                msg_box.addClass('card-panel green white-text');
+        // Abrindo IndexedDB para pegar id de usuário atual
+		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+		open.onsuccess = function(event) {
+			var db = open.result;
+			var trans = db.transaction(['UserLoggedIn'], 'readonly');
+			trans.objectStore('UserLoggedIn').openCursor().onsuccess = function(event) {
+				var cursor = event.target.result;
+				if (cursor) {
 
-                ShowSchedeuleList();
+                    // Criando JSON e adicionando ao BD
+                    var schedule = {
+                        service_id: serv_id,
+                        animal_id: anim_id,
+                        user_id: cursor.value.id,
+                        date: date,
+                        time: time
+                    };
+
+                    $.ajax({
+                        method: "PUT",
+                        url: 'http://localhost:5984/doggos_shceduling/' + data.uuids[0],
+                        data: JSON.stringify(schedule),
+                        success: function() {
+                            var msg_box = $('#message');
+                            msg_box.html('Serviço agendado com sucesso.')
+                            msg_box.addClass('card-panel green white-text');
+
+                            ShowSchedeuleList();
+                        }
+                    });
+
+                }
             }
-        });
+        }
     });
 }
 
@@ -236,30 +266,44 @@ function ShowUserSchedule(){
     var cards = $('#cards');
 
     $.get('http://localhost:5984/doggos_shceduling/_all_docs', function(data, status){
-		for (let i = 0; i < data.total_rows; i++){
-			$.get('http://localhost:5984/doggos_shceduling/' + data.rows[i].id, function(schedule, status){
-                //if(schedule.user_id == user_id){
-                    // Busca serviço correspondente
-                    $.get('http://localhost:5984/doggos_services/' + schedule.service_id, function(service, status){
-                        // Busca animal correspondente
-                        $.get('http://localhost:5984/doggos_animals/' + schedule.animal_id, function(animal, status){
-
-                            cards.append(
-                                `<div class="col s12 m6 l6">
-                                    <div class="card">
-                                        <div class="card-content">
-                                            <div class="card-title">` + animal.name + `</div>
-                                            <span style="color:gray;">Serviço:</span> ` + service.name + `<br>
-                                            <span style="color:gray;">Dia:</span> ` + schedule.date + `<br>
-                                            <span style="color:gray;">Horário:</span> ` + schedule.time + `h 00
-                                        </div>
-                                    </div>
-                                </div>`
-                            );
+        // Abrindo IndexedDB para pegar id de usuário atual
+		var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
+		open.onsuccess = function(event) {
+			var db = open.result;
+			var trans = db.transaction(['UserLoggedIn'], 'readonly');
+			trans.objectStore('UserLoggedIn').openCursor().onsuccess = function(event) {
+				var cursor = event.target.result;
+				if (cursor) {
+                    for (let i = 0; i < data.total_rows; i++){
+                        $.get('http://localhost:5984/doggos_shceduling/' + data.rows[i].id, function(schedule, status){
+                            if(schedule.user_id == cursor.value.id){
+                                RenderUserSchedule(schedule, cards);
+                            }
                         });
-                    });
-                //}
-            });
+                    }
+                }
+            }
         }
+    });
+}
+
+function RenderUserSchedule(schedule, cards){
+    // Busca serviço correspondente
+    $.get('http://localhost:5984/doggos_services/' + schedule.service_id, function(service, status){
+        // Busca animal correspondente
+        $.get('http://localhost:5984/doggos_animals/' + schedule.animal_id, function(animal, status){
+            cards.append(
+                `<div class="col s12 m6 l6">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-title">` + animal.name + `</div>
+                            <span style="color:gray;">Serviço:</span> ` + service.name + `<br>
+                            <span style="color:gray;">Dia:</span> ` + schedule.date + `<br>
+                            <span style="color:gray;">Horário:</span> ` + schedule.time + `h 00
+                        </div>
+                    </div>
+                </div>`
+            );
+        });
     });
 }

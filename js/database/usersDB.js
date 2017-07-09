@@ -93,27 +93,19 @@ function EditUser(){
 }
 
 function GetEditedUser(){
-	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
 	var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
 	open.onsuccess = function(event) {
 		var db = open.result;
 		var trans = db.transaction(['UserLoggedIn'], 'readonly');
-		var user = trans.objectStore('UserLoggedIn');
 
-		user.openCursor().onsuccess = function(event) {
+		trans.objectStore('UserLoggedIn').openCursor().onsuccess = function(event) {
         	var cursor = event.target.result;
 			if (cursor) {
-				user.openCursor().onsuccess = function(event) {
-					var cursor = event.target.result;
-					if (cursor) {
-						$.get('http://localhost:5984/doggos_users/' + cursor.value.id, function(user, status){
-							$("#name")		.val(user.name);
-							$("#email")		.val(user.email);
-							$("#address")	.val(user.address);
-						});
-					}
-				};
+				$.get('http://localhost:5984/doggos_users/' + cursor.value.id, function(user, status){
+					$("#name")		.val(user.name);
+					$("#email")		.val(user.email);
+					$("#address")	.val(user.address);
+				});
 			}
         };
 
@@ -153,10 +145,6 @@ function Login() {
 							var error_box = $('#warning');
 							error_box.html('Nome de usuário não existe');
 							error_box.addClass('card-panel red white-text');
-
-							trans.oncomplete = function() {
-								db.close();
-							};
 						}
 
 						// Usuário existe mas senha está errada
@@ -164,10 +152,6 @@ function Login() {
 							var error_box = $('#warning');
 							error_box.html('Senha incorreta');
 							error_box.addClass('card-panel red white-text');
-
-							trans.oncomplete = function() {
-								db.close();
-							};
 						}
 
 						// Credenciais corretas
@@ -221,26 +205,4 @@ function Loggoff() {
 		}
 	}
 
-}
-
-function LoggedUserName(){
-	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-    var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
-
-    open.onsuccess = function(event) {
-        var db 	  = open.result;
-        var trans = db.transaction("UserLoggedIn", "readwrite");
-		var user  = trans.objectStore("UserLoggedIn");
-
-        user.openCursor().onsuccess = function(event) {
-        	var cursor = event.target.result;
-			if (cursor) {
-				$('#username').append(cursor.value.name);
-			}
-        };
-
-		trans.oncomplete = function() {
-			db.close();
-		};
-	}
 }

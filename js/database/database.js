@@ -14,6 +14,20 @@ open.onupgradeneeded = function() {
 		db.createObjectStore("UserLoggedIn", {keyPath: "id", autoIncrement:false});
 	}
 
+
+	$.get('http://localhost:5984/_uuids', function(data, status){
+		user = {
+			login: 	  "admin",
+			name: 	  "admin",
+			email: 	  "admin@admin.net",
+			pass: 	  "senha",
+			address:  ".",
+			is_admin: true
+		};
+
+		put('http://localhost:5984/doggos_users/' + data.uuids[0], JSON.stringify(user));
+	});
+
 	db.close();
 };
 
@@ -42,6 +56,7 @@ function put (_url, _data, _redirect){
 	});
 }
 
+
 // Função que redireciona para a página de login caso a página atual necessite login e o usuário não esteja logado
 function RequireLogin(){
 	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
@@ -65,7 +80,7 @@ function RequireLogin(){
 	}
 }
 
-// Função que redireciona para a página de login caso a página atual necessite login e o usuário não esteja logado
+// Função que redireciona para a página de login caso a página atual necessite permissão de adm e o usuário não a tenha
 function RequireAdm(){
 	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
 	var open = indexedDB.open("PetshopDogosDatabase", DB_VERSION);
@@ -94,7 +109,6 @@ function RequireAdm(){
 		};
 	}
 }
-
 
 function CheckAdm(){
 	var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
@@ -143,6 +157,7 @@ function CheckLogin(){
 				StartNavbarOff();
 				StartSidebarOff();
 			}
+			$(".button-collapse").sideNav();
         };
 	}
 }
